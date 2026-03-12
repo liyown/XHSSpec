@@ -1,11 +1,17 @@
+import { writeFileSync } from "node:fs";
+import { join } from "node:path";
 import { defineConfig } from "vitepress";
 
 export default defineConfig({
   title: "XHSOps",
   description: "小红书内容运营的正确打开方式 - 在 AI 工具里用 slash command 完成整个工作流",
   lang: "zh-CN",
+  base: "/XHSOps/",
   cleanUrls: true,
   outDir: "../docs",
+  buildEnd(siteConfig) {
+    writeFileSync(join(siteConfig.outDir, ".nojekyll"), "");
+  },
   themeConfig: {
     nav: [
       { text: "首页", link: "/" },
