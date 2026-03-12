@@ -5,6 +5,7 @@ export default defineConfig({
   description: "小红书内容运营的正确打开方式 - 在 AI 工具里用 slash command 完成整个工作流",
   lang: "zh-CN",
   cleanUrls: true,
+  outDir: "../pages",
   themeConfig: {
     nav: [
       { text: "首页", link: "/" },
