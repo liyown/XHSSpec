@@ -1,0 +1,7 @@
+version: 0.1.0
+name: xhsops-workspace
+default_workflow: quick
+review_default_mode: light
+export_formats:
+  - md
+id_strategy: date-slug

@@ -1,0 +1,17 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "XHSOps: Status",
+      "type": "shell",
+      "command": "bun run src/cli.ts status --all",
+      "problemMatcher": []
+    },
+    {
+      "label": "XHSOps: Validate",
+      "type": "shell",
+      "command": "bun run src/cli.ts validate --target repo",
+      "problemMatcher": []
+    }
+  ]
+}

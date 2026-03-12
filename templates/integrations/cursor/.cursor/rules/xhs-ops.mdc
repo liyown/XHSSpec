@@ -1,0 +1,16 @@
+---
+description: XHSOps workflow rule
+globs:
+alwaysApply: false
+---
+
+Use this repo's `.xhsops/` directory as the source of truth for Xiaohongshu operations.
+
+- Read `.xhsops/config.yaml`, `brand/*`, `strategy/*`, and `specs/*` before drafting.
+- Keep long-lived knowledge in repo files, not in ad hoc chat memory.
+- Use `xhsops quick`, `xhsops hot`, `xhsops plan`, `xhsops review`, and `xhsops archive` for deterministic workflow steps.
+- Use `xhsops publish` to generate screenshot-ready publish artifacts from a finished draft.
+- When the user asks to write a post quickly, route to the quick workflow.
+- When the user asks about a trend or whether to react to one, route to the trend workflow.
+- When the user asks for a structured series or campaign, route to the campaign workflow.
+- Use `<placeholder>...</placeholder>` for intentionally incomplete fields instead of vague filler text.
