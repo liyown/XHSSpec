@@ -12,9 +12,9 @@
     "check": "bun test",
     "test": "bun test",
     "test:smoke": "bun test ./scripts/smoke.test.ts",
-    "docs:dev": "vitepress dev docs",
-    "docs:build": "vitepress build docs",
-    "docs:preview": "vitepress preview docs"
+    "docs:dev": "vitepress dev pages",
+    "docs:build": "vitepress build pages",
+    "docs:preview": "vitepress preview pages"
   },
   "devDependencies": {
     "@types/node": "^25.4.0",
