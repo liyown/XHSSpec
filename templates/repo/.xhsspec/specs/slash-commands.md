@@ -65,8 +65,8 @@ This file defines host-agnostic behavior for coding-agent environments such as C
 
 - Intent: turn a finished draft into a publish package
 - Read: latest draft, latest review, `.xhsspec/specs/publish.spec.md`, `.xhsspec/prompts/publish.md`, brand files
-- Write: `publish/<date>/<run-id>-<title>/note.md`, `cover-brief.md`, `assets.md`, `demo.html`, `publish-guide.md`
-- Response: final title, visual directions, publish checklist, next command
+- Write: `publish/<date>/<run-id>-<title>/note.md`, `first-screen.md`, `visual-plan.md`, `demo.html`, `posting-guide.md`, `post-meta.yaml`
+- Response: final title, chosen style, visual directions, publish checklist, next command
 - Writeback rule: treat `demo.html` as a screenshot-ready artifact rather than a plain reading preview
 
 ## `/xhs:archive`

@@ -2,6 +2,7 @@ version: 0.1.0
 name: xhs-spec-workspace
 default_workflow: quick
 review_default_mode: light
+publish_default_style: clean-card
 export_formats:
   - md
 id_strategy: date-slug

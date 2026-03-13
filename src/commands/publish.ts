@@ -1,11 +1,11 @@
 import type { CommandContext } from "../types.ts";
 import { ensureRepo } from "../lib/context.ts";
-import { latestRun, resolveRun, workflowReferencePaths } from "../repo.ts";
+import { getXhsSpecPath, latestRun, resolveRun, workflowReferencePaths } from "../repo.ts";
 import { syncCampaignMetadata } from "../services/campaign.ts";
 import { assertReadyForPublish } from "../services/completeness.ts";
 import { buildPublishPackage } from "../services/publish.ts";
 import { canPublish, updateRunStatus } from "../services/workflow.ts";
-import { formatDate, getStringArg, toIsoNow } from "../utils.ts";
+import { formatDate, getStringArg, parseSimpleYaml, readText, toIsoNow } from "../utils.ts";
 
 export async function publishCommand(context: CommandContext): Promise<void> {
   await ensureRepo(context.repoRoot);
@@ -27,10 +27,12 @@ export async function publishCommand(context: CommandContext): Promise<void> {
 
   const publishDate = getStringArg(context.args, "date") ?? new Date().toISOString().slice(0, 10);
   const titleOverride = getStringArg(context.args, "title");
+  const style = getStringArg(context.args, "style") ?? (await readPublishDefaultStyle(context.repoRoot)) ?? "clean-card";
   const packageInfo = await buildPublishPackage(context.repoRoot, run, {
     noteId,
     publishDate,
     titleOverride,
+    style,
   });
 
   const nextStatus = run.workflow === "campaign" ? "ready" : "done";
@@ -43,13 +45,24 @@ export async function publishCommand(context: CommandContext): Promise<void> {
   console.log(`Created publish package for ${run.id}`);
   console.log(packageInfo.dir);
   console.log(packageInfo.notePath);
-  console.log(packageInfo.coverBriefPath);
-  console.log(packageInfo.assetsPath);
+  console.log(packageInfo.firstScreenPath);
+  console.log(packageInfo.visualPlanPath);
   console.log(packageInfo.demoPath);
-  console.log(packageInfo.guidePath);
+  console.log(packageInfo.postingGuidePath);
+  console.log(`Style: ${packageInfo.style}`);
   const refs = workflowReferencePaths(context.repoRoot, run.workflow);
   console.log(`Read with agent: ${refs.commands.find((ref) => ref.endsWith("xhs-publish.md")) ?? refs.commands[0]}`);
   console.log(`Specs: ${refs.specs.join(", ")}`);
   console.log(`Prompts: ${refs.prompts.join(", ")}`);
   console.log(`Next: xhs-spec archive --target ${run.id}${noteId ? ` --note ${noteId}` : ""}`);
+}
+
+async function readPublishDefaultStyle(repoRoot: string): Promise<string | null> {
+  try {
+    const config = parseSimpleYaml(await readText(getXhsSpecPath(repoRoot, "config.yaml")));
+    const value = config.publish_default_style;
+    return typeof value === "string" && value.trim() ? value.trim() : null;
+  } catch {
+    return null;
+  }
 }
