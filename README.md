@@ -1,70 +1,62 @@
 # XHSSpec
 
-> Turn Xiaohongshu content ops into a reusable system inside Claude Code, Codex, Cursor, and VS Code.
+> 在 Claude Code、Codex、Cursor、VS Code 这类 AI 编码环境里，把小红书运营变成一个可复用、可归档、可续写的内容系统。
 
 <p align="center">
   <img src="./assets/index.png" alt="XHSSpec cover" width="960" />
 </p>
 
 <p align="center">
-  <strong>Not a SaaS dashboard.</strong>
-  <strong>Not an auto-posting bot.</strong>
-  <strong>Not another “AI writes a post” wrapper.</strong>
-</p>
-
-<p align="center">
-  XHSSpec is a repo-first, agent-first content operations system for Xiaohongshu.
+  XHSSpec 是一个 repo-first、agent-first、spec-driven 的小红书内容运营系统。
 </p>
 
 <p align="center">
   <a href="https://github.com/liyown/XHSSpec">GitHub</a> ·
-  <a href="https://liyown.github.io/XHSSpec/">Docs</a> ·
+  <a href="https://liyown.github.io/XHSSpec/">文档站</a> ·
   <a href="https://www.npmjs.com/package/xhs-spec">npm</a>
 </p>
 
 ---
 
-## Why This Project Exists
+## 这个项目为什么存在
 
-Most people do Xiaohongshu content like this:
+大多数人做小红书内容，实际流程大概是这样的：
 
-- a random idea appears
-- a chat thread gets long
-- AI writes a draft
-- the final post gets copied out
-- everything learned disappears
+- 突然想到一个选题
+- 和 AI 聊了一长串
+- 产出一篇 draft
+- 复制出去发布
+- 这次过程里的经验和判断，全部散在聊天记录里
 
-That works once.
-It does not scale into a system.
+这套方式不是完全没用。
+但它只能解决“这一次”，不能解决“以后还能不能越来越顺”。
 
-If you are a founder, indie hacker, developer creator, or small content team, the real problem is usually not “how do I get one more draft?”
+对很多技术创作者、独立开发者、技术品牌和小团队来说，真正的问题其实不是：
 
-The real problem is:
+> 我还能不能再多出一篇稿子？
 
-- how do I keep my positioning consistent?
-- how do I know whether a hot topic fits my brand?
-- how do I turn one good post into a repeatable workflow?
-- how do I leave behind assets that the next post can reuse?
+真正的问题是：
 
-**XHSSpec answers that by treating content ops like an engineering system.**
+- 我的账号定位怎么持续一致？
+- 这个热点到底适不适合我的品牌？
+- 一篇效果不错的内容，怎么变成可复用的方法？
+- 每一次创作之后，到底留下了什么？
 
-You keep long-term knowledge in the repo.
-You let the agent do the messy thinking.
-You keep every run inspectable, archivable, and reusable.
+**XHSSpec 做的，就是把这些问题从“临时聊天”变成“可执行系统”。**
 
 ---
 
-## What XHSSpec Actually Does
+## XHSSpec 到底在做什么
 
-XHSSpec gives your AI coding tool a complete Xiaohongshu workflow:
+XHSSpec 会给你的 AI 工具一套完整的小红书工作流：
 
-- `brand` and `strategy` files define who you are and what you want to say
-- `slash commands` decide what kind of workflow you are running
-- `artifacts` capture brief, draft, review, publish package, and retrospective
-- `publish` turns a finished draft into assets you can actually use
-- `knowledge` keeps lessons so the next run starts smarter
+- 用 `brand` 和 `strategy` 文件保存长期上下文
+- 用 `slash command` 决定当前走哪条 workflow
+- 用 `artifact` 保存 brief、draft、review、publish、archive
+- 用 `publish` 把终稿继续加工成可发布资产
+- 用 `knowledge` 把经验写回 repo，给下一次继续用
 
-This is the core idea:
+核心思路可以压缩成这条链路：
 
 ```text
 idea
@@ -78,15 +70,15 @@ idea
 
 ---
 
-## Why It Feels Different
+## 它和普通 AI 写稿工具有什么区别
 
-Most AI writing tools stop at:
+很多 AI 写作工具停在这里：
 
 ```text
 prompt -> draft
 ```
 
-XHSSpec is built for:
+XHSSpec 做的是：
 
 ```text
 brand context
@@ -96,47 +88,51 @@ brand context
   -> archive + reuse
 ```
 
-That means:
+这意味着：
 
-- your drafts do not drift away from your positioning
-- your series content can be tracked note by note
-- your publish step produces actual posting assets
-- your past work becomes operating knowledge instead of dead chat logs
+- 你的内容不会越来越偏离账号定位
+- 系列内容可以一篇一篇持续推进
+- 发布阶段不是“再给你一份 markdown”，而是真正的发布包
+- 过去做过的内容，会变成后面能复用的资产，而不是死掉的聊天记录
 
 ---
 
-## The Real Frontend: Slash Commands
+## 真正的前台不是 CLI，而是 Slash Command
 
-You do **not** need to live in the CLI.
+你不应该围着 CLI 生活。
 
-The CLI is the deterministic engine.
-The real user experience happens inside your AI tool through slash commands and agent behavior.
+CLI 是 deterministic engine，负责：
 
-Typical entry points:
+- 初始化
+- 创建 run
+- 校验状态
+- 推进 publish / archive 这类确定性动作
 
-| Command | Use it when |
+真正的前台体验，发生在 AI 工具里：
+
+| 命令 | 适合什么时候用 |
 | --- | --- |
-| `/xhs:quick` | you want to turn one idea into one post quickly |
-| `/xhs:hot` | you want to react to a trend but need a fit check first |
-| `/xhs:plan` | you want to build a series or campaign |
-| `/xhs:review` | you want the agent to tighten the current draft |
-| `/xhs:rewrite` | you want the next version, not just comments |
-| `/xhs:publish` | you want a posting package, not just another markdown file |
-| `/xhs:archive` | you want to preserve what worked and what failed |
+| `/xhs:quick` | 你有一个想法，想快速变成一篇内容 |
+| `/xhs:hot` | 你看到一个热点，先判断该不该跟 |
+| `/xhs:plan` | 你想做系列、周计划、月主题 |
+| `/xhs:review` | 你想让 agent 按规范收紧当前稿子 |
+| `/xhs:rewrite` | 你想要下一版，而不是只要评论 |
+| `/xhs:publish` | 你想拿到一套可以直接发的发布包 |
+| `/xhs:archive` | 你想把这次经验留下来，下次继续用 |
 
 ---
 
-## Three Core Workflows
+## 三条核心工作流
 
 ### 1. Quick
 
-Best for:
+适合：
 
-- one post
-- one idea
-- one fast content push
+- 单篇内容
+- 临时想法
+- 快速启动一次创作
 
-Flow:
+流程：
 
 ```text
 /xhs:quick
@@ -149,13 +145,13 @@ Flow:
 
 ### 2. Trend
 
-Best for:
+适合：
 
-- reacting to a hot topic
-- deciding whether a trend fits your account
-- moving quickly without dropping brand discipline
+- 追热点
+- 借势表达
+- 先判断“适不适合品牌”，再决定要不要写
 
-Flow:
+流程：
 
 ```text
 /xhs:hot
@@ -168,13 +164,13 @@ Flow:
 
 ### 3. Campaign
 
-Best for:
+适合：
 
-- a weekly series
-- a monthly theme
-- a multi-note experiment
+- 周系列
+- 月主题
+- 多篇 note 实验
 
-Flow:
+流程：
 
 ```text
 /xhs:plan
@@ -188,20 +184,22 @@ Flow:
 
 ---
 
-## Publish Is The Payoff
+## Publish 才是价值真正显化的时刻
 
-A draft is not the end of the workflow.
+很多系统在 draft 完成时就结束了。
 
-On Xiaohongshu, the real work is not just writing a post.
-It is turning that post into something you can actually publish.
+但对小红书来说，真正的工作并不是“写完一篇”。
+而是：
 
-That is why XHSSpec generates a posting package at:
+> 怎么把这篇内容变成一个真的可以发出去的对象。
+
+所以 XHSSpec 会在 repo 根目录下生成一套发布包：
 
 ```text
 publish/<date>/<run-id>-<title>/
 ```
 
-Inside it:
+里面包括：
 
 - `note.md`
 - `first-screen.md`
@@ -210,40 +208,40 @@ Inside it:
 - `posting-guide.md`
 - `post-meta.yaml`
 
-`demo.html` is not a reading preview.
-It is a screenshot-ready visual companion for:
+这里的 `demo.html` 不是阅读预览。
+它是一个 **可截图、可做封面草图、可做信息卡的演示稿**。
 
-- cover ideas
-- information cards
-- CTA slides
-- lightweight demo-style assets you can capture and post
+也就是说，publish 不是导出终稿。
+它是在把终稿继续转成可发布资产。
 
 ---
 
-## How You Actually Start
+## 你真正怎么开始
 
-### 1. Initialize once
+### 1. 先初始化一次
+
+如果你主要用 Claude Code：
 
 ```bash
 xhs-spec init --tools claude-code
 ```
 
-or:
+如果你主要用 Codex / Cursor / VS Code：
 
 ```bash
 xhs-spec init --tools codex,cursor,vscode
 ```
 
-This installs:
+它会自动安装：
 
 - `.xhsspec/`
-- brand and strategy templates
-- specs, prompts, and workflow contracts
-- tool-specific integration files
+- brand / strategy 模板
+- specs / prompts / commands
+- 对应工具的集成文件
 
-### 2. Fill your positioning once
+### 2. 先把账号定位补到可用
 
-Minimum files:
+至少补这 5 个文件：
 
 - `.xhsspec/brand/profile.md`
 - `.xhsspec/brand/audience.md`
@@ -251,69 +249,69 @@ Minimum files:
 - `.xhsspec/brand/tone.md`
 - `.xhsspec/brand/taboo.md`
 
-### 3. Then stay inside your AI tool
+### 3. 然后就回到 AI 工具里
 
-Example in Claude Code:
+例如在 Claude Code 里直接说：
 
 ```text
 /xhs:quick
 
-写一篇给技术创业者看的内容：
+帮我写一篇给技术创业者看的内容：
 为什么团队不该继续把 AI 当临时写手，
 而应该把它接进 repo workflow。
 ```
 
-From there, the agent should:
+从这一步开始，agent 就应该去做这些事：
 
-- read your `.xhsspec/brand/*`
-- build or continue the correct run
-- write the right artifacts
-- guide you toward review, publish, and archive
-
----
-
-## What You Keep After Every Run
-
-This is the part most tools never solve.
-
-Every finished run leaves behind:
-
-- a brief
-- a draft
-- a review artifact
-- a publish package
-- a retrospective
-- a knowledge entry
-
-So the output is not “one more chat”.
-The output is “one more reusable operating asset”.
+- 读 `.xhsspec/brand/*`
+- 读 `.xhsspec/strategy/*`
+- 建或续正确的 run
+- 写回 brief / draft / review / publish
+- 把你带到下一步，而不是只给你一段聊天回复
 
 ---
 
-## Who This Is For
+## 每次运行之后，你真正留下了什么
 
-XHSSpec is especially good for:
+这是 XHSSpec 和很多工具最不一样的地方。
 
-- technical founders building personal brands
-- indie hackers and creators who think in systems
-- devrel, growth, or content teams already using AI coding tools
-- operators who want process, not just copywriting
+每次完整运行之后，你留下来的不是“一段对话”。
+而是：
 
----
+- 一个 brief
+- 一个 draft
+- 一个 review artifact
+- 一个 publish package
+- 一个 retrospective
+- 一条 knowledge 经验
 
-## Docs
-
-Start here:
-
-- [Getting Started](./pages/guide/getting-started.md)
-- [First Full Run](./pages/guide/first-run.md)
-- [Why XHSSpec](./pages/concepts/why-xhs-spec.md)
-- [Publish Workflow](./pages/workflows/publish.md)
-- [Claude Code Integration](./pages/integrations/claude-code.md)
-- [Codex / Cursor / VS Code Integration](./pages/integrations/codex-cursor-vscode.md)
+也就是说，**每一次内容创作，都会把你的系统再往前推一点。**
 
 ---
 
-## One-Sentence Summary
+## 谁最适合现在就开始
 
-**XHSSpec turns Xiaohongshu content creation from temporary chat output into a repo-backed operating system your agent can keep working inside.**
+XHSSpec 特别适合这些人：
+
+- 技术创作者
+- 一人公司 / 独立开发者
+- 技术品牌内容团队
+- 已经在用 AI coding tools 的运营 / 增长团队
+- 希望把内容从“临时生成”变成“长期资产”的人
+
+---
+
+## 推荐阅读
+
+- [快速开始](./pages/guide/getting-started.md)
+- [第一次完整运行](./pages/guide/first-run.md)
+- [为什么要用 XHSSpec](./pages/concepts/why-xhs-spec.md)
+- [Publish 工作流](./pages/workflows/publish.md)
+- [Claude Code 集成](./pages/integrations/claude-code.md)
+- [Codex / Cursor / VS Code 集成](./pages/integrations/codex-cursor-vscode.md)
+
+---
+
+## 一句话总结
+
+**XHSSpec 把小红书内容创作，从一次次临时对话，变成一个 agent 可以持续工作的 repo-backed 内容系统。**
