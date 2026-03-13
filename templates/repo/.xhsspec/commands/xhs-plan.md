@@ -27,6 +27,11 @@ Use this command when the user wants a structured campaign, series, or experimen
 4. Leave `tasks.md` aligned with the planned note sequence.
 5. Use `<placeholder>...</placeholder>` for any still-unresolved field.
 
+## When Blocked
+
+- If `xhs-spec draft` is blocked, go back and finish `proposal.md`, `brief.md`, or `tasks.md`.
+- Keep the note sequence in sync with `tasks.md`; do not draft against stale plan files.
+
 ## Response Shape
 
 1. Campaign goal summary

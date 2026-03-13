@@ -24,7 +24,7 @@ export async function quickCommand(context: CommandContext): Promise<void> {
     id: runId,
     type: "quick",
     workflow: "quick",
-    status: "drafting",
+    status: "created",
     idea,
     angle: getStringArg(context.args, "angle") ?? placeholder("补充本篇角度"),
     cta: getStringArg(context.args, "cta") ?? placeholder("补充本篇 CTA"),
@@ -36,7 +36,7 @@ export async function quickCommand(context: CommandContext): Promise<void> {
   await writeText(
     path.join(runDir, "brief.md"),
     createFrontmatter(
-      baseFrontmatter(runId, "quick", "drafting"),
+      baseFrontmatter(runId, "quick", "created"),
       [
         "# Quick Brief",
         "",
@@ -56,7 +56,7 @@ export async function quickCommand(context: CommandContext): Promise<void> {
   await writeText(
     path.join(runDir, "draft.md"),
     createFrontmatter(
-      baseFrontmatter(runId, "quick", "drafting"),
+      baseFrontmatter(runId, "quick", "created"),
       [
         "# Draft",
         "",
@@ -92,5 +92,5 @@ export async function quickCommand(context: CommandContext): Promise<void> {
   console.log(`Read with agent: ${refs.commands[0]}`);
   console.log(`Specs: ${refs.specs.join(", ")}`);
   console.log(`Prompts: ${refs.prompts.join(", ")}`);
-  console.log(`Next: /xhs:quick or xhs-spec review --target ${runId}`);
+  console.log(`Next: ask the agent to complete brief.md and draft.md, then run xhs-spec review --target ${runId}`);
 }

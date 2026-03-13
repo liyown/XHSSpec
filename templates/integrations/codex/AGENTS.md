@@ -33,3 +33,4 @@ Read current run artifacts when the user is working on a specific campaign, quic
 - Use `<placeholder>...</placeholder>` for intentionally incomplete fields.
 - Do not use vague filler like "待补充" to bypass workflow gates.
 - If validation blocks a step, finish the placeholder-bearing artifact first.
+- When blocked, identify the exact file to complete next and return to the same workflow instead of restarting it.

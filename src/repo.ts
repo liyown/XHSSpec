@@ -148,11 +148,11 @@ async function listWorkflowRuns(repoRoot: string, workflow: WorkflowKind): Promi
     runs.push({
       id: String(meta.id ?? name),
       workflow,
-      status: String(meta.status ?? "initialized") as RunRecord["status"],
+      status: String(meta.status ?? "created") as RunRecord["status"],
       path: runPath,
       title: String(meta.title ?? meta.idea ?? meta.topic ?? name),
       updatedAt: String(meta.updated_at ?? ""),
-      nextStep: suggestNextStep(workflow, String(meta.status ?? "initialized")),
+      nextStep: suggestNextStep(workflow, String(meta.status ?? "created")),
     });
   }
 
@@ -161,6 +161,9 @@ async function listWorkflowRuns(repoRoot: string, workflow: WorkflowKind): Promi
 
 export function suggestNextStep(workflow: WorkflowKind, status: string): string {
   if (workflow === "quick") {
+    if (status === "created") {
+      return "Ask the agent to complete brief.md and draft.md, then xhs-spec review --target <id>";
+    }
     if (status === "drafting" || status === "briefed") {
       return "/xhs:quick or xhs-spec review --target <id>";
     }
@@ -174,6 +177,9 @@ export function suggestNextStep(workflow: WorkflowKind, status: string): string 
   }
 
   if (workflow === "trend") {
+    if (status === "created") {
+      return "Ask the agent to complete trend-brief.md and fit-check.md, then xhs-spec fit --target <id> --verdict approved|rejected";
+    }
     if (status === "fit-checking") {
       return "/xhs:hot then xhs-spec fit --target <id> --verdict approved|rejected";
     }
@@ -192,6 +198,9 @@ export function suggestNextStep(workflow: WorkflowKind, status: string): string 
     return "xhs-spec status --target <id>";
   }
 
+  if (status === "created") {
+    return "Ask the agent to complete proposal.md, brief.md, and tasks.md, then xhs-spec draft --target <id> --note note-01";
+  }
   if (status === "planned" || status === "briefing") {
     return "/xhs:plan or xhs-spec draft --target <id> --note note-01";
   }
@@ -303,9 +312,11 @@ export async function validateRun(repoRoot: string, targetId: string): Promise<V
     }
   }
 
-  const completenessIssues = await collectRunCompletenessIssues(run);
-  for (const issue of completenessIssues) {
-    issues.push({ level: "warning", path: issue.filePath, message: issue.reason });
+  if (run.status !== "created") {
+    const completenessIssues = await collectRunCompletenessIssues(run);
+    for (const issue of completenessIssues) {
+      issues.push({ level: "warning", path: issue.filePath, message: issue.reason });
+    }
   }
 
   issues.push(...(await completenessIssuesForValidation(run)));

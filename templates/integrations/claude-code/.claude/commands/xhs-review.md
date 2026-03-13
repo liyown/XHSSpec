@@ -5,3 +5,4 @@ Use the review workflow for an existing Xiaohongshu draft.
 - Write back to `review.md` or the campaign note review artifact.
 - Use `<placeholder>...</placeholder>` for any intentionally unresolved judgment.
 - Make the review actionable enough for `/xhs:rewrite`.
+- If review is blocked, finish the current draft artifact first and then retry review.

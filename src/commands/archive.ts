@@ -3,9 +3,14 @@ import path from "node:path";
 import type { CommandContext } from "../types.ts";
 import { ensureRepo } from "../lib/context.ts";
 import { latestRun, resolveRun, workflowReferencePaths } from "../repo.ts";
-import { syncCampaignMetadata } from "../services/campaign.ts";
+import {
+  describeCampaignBoard,
+  describeCampaignBoardSummary,
+  describeCampaignPublishTimeline,
+  syncCampaignMetadata,
+} from "../services/campaign.ts";
 import { assertReadyForArchive } from "../services/completeness.ts";
-import { appendKnowledgeStub, canArchive, defaultOutcome, updateRunStatus } from "../services/workflow.ts";
+import { appendKnowledgeStub, canArchive, defaultOutcome, findPublishPackageForRun, updateRunStatus } from "../services/workflow.ts";
 import { createFrontmatter, getStringArg, placeholder, toIsoNow, writeText } from "../utils.ts";
 
 export async function archiveCommand(context: CommandContext): Promise<void> {
@@ -28,6 +33,15 @@ export async function archiveCommand(context: CommandContext): Promise<void> {
   await assertReadyForArchive(run, noteId);
   const retrospectivePath = path.join(run.path, "retrospective.md");
   const now = toIsoNow();
+  const publishPackage = await findPublishPackageForRun(context.repoRoot, run.id);
+  const knowledgeFile = run.workflow === "trend"
+    ? "trend-lessons.md"
+    : outcome === "completed"
+      ? "winning-patterns.md"
+      : "failed-patterns.md";
+  const campaignBoard = run.workflow === "campaign" ? await describeCampaignBoard(run.path) : [];
+  const campaignSummary = run.workflow === "campaign" ? await describeCampaignBoardSummary(run.path) : [];
+  const campaignTimeline = run.workflow === "campaign" ? await describeCampaignPublishTimeline(run.path) : [];
 
   await writeText(
     retrospectivePath,
@@ -37,11 +51,34 @@ export async function archiveCommand(context: CommandContext): Promise<void> {
         workflow: run.workflow,
         status: "archived",
         outcome,
+        publish_package: publishPackage ?? "",
+        knowledge_file: knowledgeFile,
         updated_at: now,
       },
       [
         "# Retrospective",
         "",
+        "## Snapshot",
+        `- Workflow: ${run.workflow}`,
+        `- Outcome: ${outcome}`,
+        `- Publish package: ${publishPackage ?? placeholder("补充发布包路径或说明未生成")}`,
+        `- Knowledge file: .xhsspec/knowledge/${knowledgeFile}`,
+        "",
+        ...(run.workflow === "campaign"
+          ? [
+            "## Campaign Summary",
+            ...campaignSummary.map((line) => `- ${line}`),
+            "",
+            "## Publish Timeline",
+            ...(campaignTimeline.length > 0
+              ? campaignTimeline.map((line) => `- ${line}`)
+              : [`- ${placeholder("补充系列发布节奏")}`]),
+            "",
+            "## Campaign Board",
+            ...campaignBoard.map((line) => `- ${line}`),
+            "",
+          ]
+          : []),
         "## Outcome",
         `- ${outcome}`,
         "",
@@ -58,13 +95,17 @@ export async function archiveCommand(context: CommandContext): Promise<void> {
         `- Pattern: ${placeholder("提炼并同步到 knowledge 的模式")}`,
         `- When to reuse: ${placeholder("补充复用场景")}`,
         "",
+        "## Next Time",
+        `- Reuse this in: ${placeholder("补充下次最适合复用的场景")}`,
+        `- Publish follow-up: ${placeholder("补充发布后要继续观察的信号")}`,
+        "",
         "## Spec Update Suggestion",
         `- Suggested repo update: ${placeholder("补充建议的 spec 更新")}`,
       ].join("\n"),
     ),
   );
 
-  await appendKnowledgeStub(context.repoRoot, run, outcome);
+  await appendKnowledgeStub(context.repoRoot, run, outcome, { publishPackage: publishPackage ?? undefined });
   await updateRunStatus(run, "archived", now);
   if (run.workflow === "campaign") {
     await syncCampaignMetadata(run.path, now);
@@ -76,5 +117,8 @@ export async function archiveCommand(context: CommandContext): Promise<void> {
   console.log(`Read with agent: ${refs.commands.find((ref) => ref.endsWith("xhs-archive.md")) ?? refs.commands[0]}`);
   console.log(`Specs: ${refs.specs.join(", ")}`);
   console.log(`Prompts: ${refs.prompts.join(", ")}`);
-  console.log("Knowledge updated under .xhsspec/knowledge/");
+  console.log(`Knowledge updated: .xhsspec/knowledge/${knowledgeFile}`);
+  if (publishPackage) {
+    console.log(`Linked publish package: ${publishPackage}`);
+  }
 }

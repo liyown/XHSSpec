@@ -33,3 +33,4 @@ Use `.xhsspec/` as the source of truth.
 - Use `<placeholder>...</placeholder>` for intentionally incomplete fields.
 - Do not invent vague filler text to bypass validation.
 - Replace placeholders when repo context is sufficient; otherwise keep them precise.
+- When a deterministic step is blocked, go back to the named artifact, finish it, and then resume the workflow.

@@ -26,6 +26,12 @@ Use this command when the user wants to turn a single idea into a Xiaohongshu no
 3. Replace `<placeholder>...</placeholder>` when repo context is sufficient.
 4. If context is still missing, either write one explicit assumption or keep a precise `<placeholder>...</placeholder>` block.
 
+## When Blocked
+
+- If `xhs-spec review` is blocked, go back and finish `brief.md` or `draft.md`.
+- Do not ask the human to rerun `xhs-spec quick` for the same run.
+- When blocked, name the exact file you will finish next.
+
 ## Response Shape
 
 1. One-sentence angle summary

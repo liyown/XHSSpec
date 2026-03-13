@@ -23,6 +23,12 @@ Use this command to critique a draft against repo rules.
 4. Make rewrite guidance actionable enough for `/xhs:rewrite`.
 5. Use `<placeholder>...</placeholder>` for any still-unresolved judgment.
 
+## When Blocked
+
+- If review is blocked, finish the current draft artifact first.
+- Do not create review notes against a placeholder-heavy draft.
+- Point the human to the exact draft file that still needs work.
+
 ## Response Shape
 
 1. Verdict

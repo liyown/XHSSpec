@@ -22,6 +22,30 @@ test("validateRun reports missing quick workflow artifacts", async () => {
   expect(issues.some((issue) => issue.path.endsWith("draft.md"))).toBe(true);
 });
 
+test("validateRun does not fail a created quick run for placeholder first-pass artifacts", async () => {
+  const tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "xhs-spec-created-quick-"));
+  const runPath = path.join(tempRoot, ".xhsspec", "quick", "quick-created");
+
+  await fs.mkdir(runPath, { recursive: true });
+  await fs.writeFile(
+    path.join(runPath, "run.yaml"),
+    "id: quick-created\nworkflow: quick\nstatus: created\nupdated_at: 2026-03-12T00:00:00.000Z\n",
+  );
+  await fs.writeFile(
+    path.join(runPath, "brief.md"),
+    "---\nid: quick-created\nworkflow: quick\nstatus: created\nupdated_at: 2026-03-12T00:00:00.000Z\n---\n# Brief\n\n<placeholder>补充 brief</placeholder>\n",
+  );
+  await fs.writeFile(
+    path.join(runPath, "draft.md"),
+    "---\nid: quick-created\nworkflow: quick\nstatus: created\nupdated_at: 2026-03-12T00:00:00.000Z\n---\n# Draft\n\n<placeholder>补充 draft</placeholder>\n",
+  );
+
+  const issues = await validateRun(tempRoot, "quick-created");
+
+  expect(issues.some((issue) => issue.path.endsWith("brief.md"))).toBe(false);
+  expect(issues.some((issue) => issue.path.endsWith("draft.md"))).toBe(false);
+});
+
 test("validateRepo reports incomplete brand positioning as error", async () => {
   const tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "xhs-spec-brand-validate-"));
   const brandDir = path.join(tempRoot, ".xhsspec", "brand");

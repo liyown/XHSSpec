@@ -2,6 +2,14 @@ import path from "node:path";
 
 import type { RunRecord, WorkflowKind } from "../types.ts";
 import { getXhsSpecPath, suggestNextStep, workflowReferencePaths } from "../repo.ts";
+import {
+  describeCampaignBoard,
+  describeCampaignBoardSummary,
+  describeCampaignPublishTimeline,
+  describeNextCampaignAction,
+  explainNextCampaignNote,
+  recommendNextCampaignNote,
+} from "./campaign.ts";
 import { createFrontmatter, pathExists, placeholder, readText, toIsoNow, writeText } from "../utils.ts";
 
 export function baseFrontmatter(id: string, workflow: WorkflowKind, status: string): Record<string, string> {
@@ -24,7 +32,7 @@ export async function updateRunStatus(run: RunRecord, status: string, updatedAt:
 
 export function canReview(run: RunRecord): boolean {
   if (run.workflow === "quick") {
-    return run.status === "briefed" || run.status === "drafting" || run.status === "reviewed" || run.status === "iterating";
+    return run.status === "created" || run.status === "briefed" || run.status === "drafting" || run.status === "reviewed" || run.status === "iterating";
   }
 
   if (run.workflow === "trend") {
@@ -39,6 +47,10 @@ export function canArchive(run: RunRecord): boolean {
 }
 
 export function canPublish(run: RunRecord): boolean {
+  if (run.workflow === "campaign") {
+    return run.status === "drafting" || run.status === "reviewing" || run.status === "iterating" || run.status === "ready";
+  }
+
   return run.status === "reviewed" || run.status === "done" || run.status === "ready";
 }
 
@@ -50,12 +62,18 @@ export function defaultOutcome(run: RunRecord): string {
   return "completed";
 }
 
-export async function appendKnowledgeStub(repoRoot: string, run: RunRecord, outcome: string): Promise<void> {
+export async function appendKnowledgeStub(
+  repoRoot: string,
+  run: RunRecord,
+  outcome: string,
+  options: { publishPackage?: string } = {},
+): Promise<string> {
   const filename = pickKnowledgeFile(run, outcome);
   const filePath = getXhsSpecPath(repoRoot, "knowledge", filename);
   const current = await readText(filePath);
-  const next = `${current.trimEnd()}\n\n${buildKnowledgeEntry(run, outcome)}\n`;
+  const next = `${current.trimEnd()}\n\n${buildKnowledgeEntry(run, outcome, options)}\n`;
   await writeText(filePath, `${next}\n`);
+  return filename;
 }
 
 export function pickKnowledgeFile(run: RunRecord, outcome: string): string {
@@ -66,13 +84,21 @@ export function pickKnowledgeFile(run: RunRecord, outcome: string): string {
   return outcome === "completed" ? "winning-patterns.md" : "failed-patterns.md";
 }
 
-export function buildKnowledgeEntry(run: RunRecord, outcome: string): string {
+export function buildKnowledgeEntry(
+  run: RunRecord,
+  outcome: string,
+  options: { publishPackage?: string } = {},
+): string {
+  const publishPackage = options.publishPackage ?? placeholder("补充发布包路径或说明未生成");
+
   if (run.workflow === "trend") {
     return [
       `## ${run.id}`,
       "",
       `- Source run: ${run.id}`,
+      `- Workflow: ${run.workflow}`,
       `- Verdict: ${outcome}`,
+      `- Publish package: ${publishPackage}`,
       `- Angle: ${placeholder("补充角度")}`,
       `- What made it fit or fail: ${placeholder("补充判断依据")}`,
       `- Risk note: ${placeholder("补充风险说明")}`,
@@ -85,6 +111,9 @@ export function buildKnowledgeEntry(run: RunRecord, outcome: string): string {
       `## ${run.id}`,
       "",
       `- Source run: ${run.id}`,
+      `- Workflow: ${run.workflow}`,
+      `- Outcome: ${outcome}`,
+      `- Publish package: ${publishPackage}`,
       `- Pattern: ${placeholder("补充有效模式")}`,
       `- Why it worked: ${placeholder("补充成功原因")}`,
       `- Best context to reuse: ${placeholder("补充最佳复用场景")}`,
@@ -96,11 +125,40 @@ export function buildKnowledgeEntry(run: RunRecord, outcome: string): string {
     `## ${run.id}`,
     "",
     `- Source run: ${run.id}`,
+    `- Workflow: ${run.workflow}`,
+    `- Outcome: ${outcome}`,
+    `- Publish package: ${publishPackage}`,
     `- Failure pattern: ${placeholder("补充失败模式")}`,
     `- Why it failed: ${placeholder("补充失败原因")}`,
     `- How to avoid: ${placeholder("补充规避方式")}`,
     `- When this warning matters most: ${placeholder("补充警告适用场景")}`,
   ].join("\n");
+}
+
+export async function findPublishPackageForRun(repoRoot: string, runId: string): Promise<string | null> {
+  const publishRoot = path.join(repoRoot, "publish");
+  if (!(await pathExists(publishRoot))) {
+    return null;
+  }
+
+  const fs = await import("node:fs/promises");
+  const dateDirs = await fs.readdir(publishRoot, { withFileTypes: true });
+
+  for (const dateDir of dateDirs.filter((entry) => entry.isDirectory()).sort().reverse()) {
+    const datedPath = path.join(publishRoot, dateDir.name);
+    const packageDirs = await fs.readdir(datedPath, { withFileTypes: true });
+    const match = packageDirs
+      .filter((entry) => entry.isDirectory() && (entry.name === runId || entry.name.startsWith(`${runId}-`)))
+      .map((entry) => path.join("publish", dateDir.name, entry.name))
+      .sort()
+      .at(-1);
+
+    if (match) {
+      return match;
+    }
+  }
+
+  return null;
 }
 
 export async function listFiles(dirPath: string, suffix: string): Promise<string[]> {
@@ -162,6 +220,8 @@ export async function inspectRun(run: RunRecord): Promise<Record<string, unknown
   detail.spec_refs = refs.specs;
   detail.prompt_refs = refs.prompts;
   detail.command_refs = refs.commands;
+  detail.human_next = describeHumanNext(run);
+  detail.agent_next = describeAgentNext(run, refs);
 
   if (run.workflow === "campaign") {
     const drafts = await listFiles(path.join(run.path, "drafts"), ".md");
@@ -170,6 +230,23 @@ export async function inspectRun(run: RunRecord): Promise<Record<string, unknown
     detail.review_count = reviews.length;
     detail.latest_drafts = drafts.slice(-3);
     detail.latest_reviews = reviews.slice(-3);
+    detail.campaign_board = await describeCampaignBoard(run.path);
+    detail.campaign_summary = await describeCampaignBoardSummary(run.path);
+    detail.publish_timeline = await describeCampaignPublishTimeline(run.path);
+    const nextNote = await recommendNextCampaignNote(run.path);
+    const nextNoteReason = await explainNextCampaignNote(run.path);
+    const nextAction = await describeNextCampaignAction(run.path);
+    detail.next_note = nextNote;
+    detail.next_note_reason = nextNoteReason;
+    detail.next_action = nextAction;
+    if (nextNote) {
+      detail.agent_message = buildCampaignAgentMessage(nextNote, nextAction, nextNoteReason);
+    }
+    if (nextNote && run.status !== "created" && run.status !== "archived" && run.status !== "cancelled") {
+      detail.human_next = nextNoteReason
+        ? `Ask the agent to keep progressing ${nextNote} inside this campaign. ${nextNoteReason}`
+        : `Ask the agent to keep progressing ${nextNote} inside this campaign.`;
+    }
   } else {
     const reviewPath = path.join(run.path, "review.md");
     const iterationFiles = await listFiles(run.path, ".md");
@@ -178,4 +255,76 @@ export async function inspectRun(run: RunRecord): Promise<Record<string, unknown
   }
 
   return detail;
+}
+
+function describeHumanNext(run: RunRecord): string {
+  if (run.status === "created") {
+    if (run.workflow === "quick") {
+      return "Ask the agent to complete brief.md and draft.md for this run.";
+    }
+    if (run.workflow === "trend") {
+      return "Ask the agent to complete trend-brief.md and fit-check.md, then record a fit verdict.";
+    }
+    return "Ask the agent to complete proposal.md, brief.md, and tasks.md before drafting note-01.";
+  }
+
+  return suggestNextStep(run.workflow, run.status).replace("<id>", run.id);
+}
+
+function describeAgentNext(
+  run: RunRecord,
+  refs: ReturnType<typeof workflowReferencePaths>,
+): Record<string, unknown> {
+  if (run.status === "created") {
+    if (run.workflow === "quick") {
+      return {
+        read: [refs.commands[0], refs.prompts[0], refs.prompts[1], ...refs.specs],
+        write: ["brief.md", "draft.md"],
+      };
+    }
+    if (run.workflow === "trend") {
+      return {
+        read: [refs.commands[0], refs.prompts[0], ...refs.specs],
+        write: ["trend-brief.md", "fit-check.md"],
+      };
+    }
+    return {
+      read: [refs.commands[0], refs.prompts[0], ...refs.specs],
+      write: ["proposal.md", "brief.md", "tasks.md"],
+    };
+  }
+
+  return {
+    read: refs.commands,
+    prompts: refs.prompts,
+    specs: refs.specs,
+  };
+}
+
+function buildCampaignAgentMessage(
+  nextNote: string,
+  action: "draft" | "review" | "publish" | null,
+  reason: string | null,
+): string {
+  const actionLine =
+    action === "review"
+      ? `这一步先完成 ${nextNote} 的 review，别急着开下一篇。`
+      : action === "publish"
+        ? `这一步先为 ${nextNote} 生成 publish package，再推进后续篇章。`
+        : `这一步先把 ${nextNote} 的 draft 补完整。`;
+
+  const artifactLine =
+    action === "review"
+      ? `如果 ${nextNote}.review.md 里还有 <placeholder>...</placeholder>，先补完整 review 再继续。`
+      : action === "publish"
+        ? `如果 ${nextNote} 的 draft 或 review 还有 <placeholder>...</placeholder>，先补完整，再进入 publish。`
+        : `如果 ${nextNote} 对应 draft 还有 <placeholder>...</placeholder>，先补完整，再继续下一步。`;
+
+  return [
+    `请继续推进 ${nextNote}。`,
+    "先读取 .xhsspec/commands/xhs-plan.md、相关 prompts 和当前 campaign 的 proposal.md、brief.md、tasks.md。",
+    actionLine,
+    reason ? `优先原因：${reason}` : "",
+    artifactLine,
+  ].filter(Boolean).join(" ");
 }

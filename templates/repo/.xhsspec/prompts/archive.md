@@ -15,6 +15,7 @@ Write:
 
 Output requirements:
 
+- add one lightweight snapshot that links outcome, workflow, and publish package when available
 - distinguish message, structure, and CTA learnings
 - name one reusable pattern or one failure pattern
 - suggest one concrete repo/spec update when warranted

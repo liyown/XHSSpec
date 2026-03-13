@@ -1,7 +1,7 @@
 export type WorkflowKind = "campaign" | "quick" | "trend";
 
 export type QuickStatus =
-  | "initialized"
+  | "created"
   | "briefed"
   | "drafting"
   | "reviewed"
@@ -9,7 +9,7 @@ export type QuickStatus =
   | "archived";
 
 export type TrendStatus =
-  | "initialized"
+  | "created"
   | "fit-checking"
   | "fit-approved"
   | "fit-rejected"
@@ -20,7 +20,7 @@ export type TrendStatus =
   | "archived";
 
 export type CampaignStatus =
-  | "initialized"
+  | "created"
   | "planned"
   | "briefing"
   | "drafting"

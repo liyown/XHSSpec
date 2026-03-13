@@ -4,6 +4,7 @@ import type { CommandContext } from "../types.ts";
 import { ensureRepo } from "../lib/context.ts";
 import { getXhsSpecPath, workflowReferencePaths } from "../repo.ts";
 import { assertBrandReadyForCreation } from "../services/completeness.ts";
+import { syncCampaignMetadata } from "../services/campaign.ts";
 import { baseFrontmatter } from "../services/workflow.ts";
 import { createFrontmatter, ensureDir, formatDate, getStringArg, placeholder, slugify, toIsoNow, writeText, yamlStringify } from "../utils.ts";
 
@@ -25,7 +26,7 @@ export async function planCommand(context: CommandContext): Promise<void> {
     id: campaignId,
     type: "campaign",
     workflow: "campaign",
-    status: "planned",
+    status: "created",
     goal: getStringArg(context.args, "goal") ?? "growth",
     theme,
     window: getStringArg(context.args, "window") ?? "weekly",
@@ -39,7 +40,7 @@ export async function planCommand(context: CommandContext): Promise<void> {
   await writeText(
     path.join(campaignDir, "proposal.md"),
     createFrontmatter(
-      baseFrontmatter(campaignId, "campaign", "planned"),
+      baseFrontmatter(campaignId, "campaign", "created"),
       [
         "# Campaign Proposal",
         "",
@@ -60,7 +61,7 @@ export async function planCommand(context: CommandContext): Promise<void> {
   await writeText(
     path.join(campaignDir, "brief.md"),
     createFrontmatter(
-      baseFrontmatter(campaignId, "campaign", "briefing"),
+      baseFrontmatter(campaignId, "campaign", "created"),
       [
         "# Campaign Brief",
         "",
@@ -77,10 +78,11 @@ export async function planCommand(context: CommandContext): Promise<void> {
   await writeText(
     path.join(campaignDir, "tasks.md"),
     createFrontmatter(
-      baseFrontmatter(campaignId, "campaign", "briefing"),
-      "# Tasks\n\n- [ ] Note 01 draft\n- [ ] Note 01 review\n- [ ] Note 01 rewrite if needed\n- [ ] Retrospective",
+      baseFrontmatter(campaignId, "campaign", "created"),
+      "# Tasks\n\n## Note Strategy\n\n### note-01\n- Role: <placeholder>补充该篇在系列中的角色</placeholder>\n- Angle hypothesis: <placeholder>补充该篇要验证的角度</placeholder>\n- Publish purpose: <placeholder>补充该篇的收藏/评论/转化目标</placeholder>\n\n## Execution Board\n\n- [ ] note-01 draft\n- [ ] note-01 review\n- [ ] note-01 rewrite if needed\n- [ ] Retrospective",
     ),
   );
+  await syncCampaignMetadata(campaignDir, now);
 
   console.log(`Created campaign: ${campaignId}`);
   console.log(path.join(campaignDir, "proposal.md"));
@@ -90,5 +92,5 @@ export async function planCommand(context: CommandContext): Promise<void> {
   console.log(`Read with agent: ${refs.commands[0]}`);
   console.log(`Specs: ${refs.specs.join(", ")}`);
   console.log(`Prompts: ${refs.prompts.join(", ")}`);
-  console.log(`Next: /xhs:plan or xhs-spec draft --target ${campaignId} --note note-01`);
+  console.log(`Next: ask the agent to complete proposal.md, brief.md, and tasks.md, then run xhs-spec draft --target ${campaignId} --note note-01`);
 }

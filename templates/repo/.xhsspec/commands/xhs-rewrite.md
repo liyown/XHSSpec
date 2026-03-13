@@ -22,6 +22,11 @@ Use this command after review feedback to produce the next draft version.
 3. Keep frontmatter and artifact identity intact.
 4. If a change trades off another quality, say so briefly.
 
+## When Blocked
+
+- If rewrite is blocked, finish `review.md` first.
+- Treat review as the explicit change list; do not improvise without it.
+
 ## Response Shape
 
 1. What changed

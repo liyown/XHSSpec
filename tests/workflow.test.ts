@@ -4,7 +4,7 @@ import path from "node:path";
 
 import { expect, test } from "bun:test";
 
-import { writeIterationDraft } from "../src/services/workflow.ts";
+import { canPublish, writeIterationDraft } from "../src/services/workflow.ts";
 
 test("writeIterationDraft marks iterating and injects version", async () => {
   const tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "xhs-spec-workflow-"));
@@ -17,4 +17,18 @@ test("writeIterationDraft marks iterating and injects version", async () => {
   expect(written).toContain("status: iterating");
   expect(written).toContain("version: 2");
   expect(written).toContain("updated_at: 2026-03-12T01:00:00.000Z");
+});
+
+test("campaign can continue publishing while the series is still reviewing", () => {
+  expect(
+    canPublish({
+      id: "campaign-01",
+      workflow: "campaign",
+      status: "reviewing",
+      path: "/tmp/campaign-01",
+      title: "Campaign",
+      updatedAt: "2026-03-13T00:00:00.000Z",
+      nextStep: "xhs-spec status --target campaign-01",
+    }),
+  ).toBe(true);
 });

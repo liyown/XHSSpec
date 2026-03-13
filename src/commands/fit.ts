@@ -24,7 +24,7 @@ export async function fitCommand(context: CommandContext): Promise<void> {
     throw new Error("fit requires --verdict approved|rejected");
   }
 
-  if (run.status !== "fit-checking" && run.status !== "fit-approved" && run.status !== "fit-rejected") {
+  if (run.status !== "created" && run.status !== "fit-checking" && run.status !== "fit-approved" && run.status !== "fit-rejected") {
     throw new Error(`Trend run ${run.id} is in status ${run.status} and cannot accept fit verdict.`);
   }
   if (verdictArg === "approved" || verdictArg === "rejected") {

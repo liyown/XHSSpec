@@ -24,7 +24,7 @@ export async function hotCommand(context: CommandContext): Promise<void> {
     id: runId,
     type: "trend",
     workflow: "trend",
-    status: "fit-checking",
+    status: "created",
     topic,
     source_summary: getStringArg(context.args, "source") ?? placeholder("补充热点来源摘要"),
     urgency: getStringArg(context.args, "urgency") ?? "normal",
@@ -36,7 +36,7 @@ export async function hotCommand(context: CommandContext): Promise<void> {
   await writeText(
     path.join(runDir, "trend-brief.md"),
     createFrontmatter(
-      baseFrontmatter(runId, "trend", "fit-checking"),
+      baseFrontmatter(runId, "trend", "created"),
       [
         "# Trend Brief",
         "",
@@ -53,7 +53,7 @@ export async function hotCommand(context: CommandContext): Promise<void> {
   await writeText(
     path.join(runDir, "fit-check.md"),
     createFrontmatter(
-      baseFrontmatter(runId, "trend", "fit-checking"),
+      baseFrontmatter(runId, "trend", "created"),
       [
         "# Fit Check",
         "",
@@ -78,7 +78,7 @@ export async function hotCommand(context: CommandContext): Promise<void> {
   );
   await writeText(
     path.join(runDir, "draft.md"),
-    createFrontmatter(baseFrontmatter(runId, "trend", "drafting"), "# Trend Draft\n\nOnly fill this after fit-check is approved."),
+    createFrontmatter(baseFrontmatter(runId, "trend", "created"), "# Trend Draft\n\nOnly fill this after fit-check is approved."),
   );
 
   console.log(`Created trend run: ${runId}`);
@@ -88,5 +88,5 @@ export async function hotCommand(context: CommandContext): Promise<void> {
   console.log(`Read with agent: ${refs.commands[0]}`);
   console.log(`Specs: ${refs.specs.join(", ")}`);
   console.log(`Prompts: ${refs.prompts.join(", ")}`);
-  console.log(`Next: /xhs:hot then xhs-spec fit --target ${runId} --verdict approved|rejected`);
+  console.log(`Next: ask the agent to complete trend-brief.md and fit-check.md, then run xhs-spec fit --target ${runId} --verdict approved|rejected`);
 }

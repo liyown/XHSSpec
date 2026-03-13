@@ -50,7 +50,7 @@ export async function assertReadyForDraft(run: RunRecord, noteId?: string): Prom
   if (run.workflow === "campaign") {
     issues.push(...(await inspectMarkdownCompleteness(path.join(run.path, "proposal.md"))));
     issues.push(...(await inspectMarkdownCompleteness(path.join(run.path, "brief.md"))));
-    issues.push(...(await inspectMarkdownCompleteness(path.join(run.path, "tasks.md"))));
+    issues.push(...(await inspectCampaignTasksCompleteness(path.join(run.path, "tasks.md"))));
   }
 
   if (issues.length > 0) {
@@ -63,7 +63,7 @@ export async function assertBrandReadyForCreation(repoRoot: string): Promise<voi
   if (issues.length > 0) {
     const lines = issues.map((issue) => `- ${issue.filePath}: ${issue.reason}`).join("\n");
     throw new Error(
-      `Cannot start content creation because brand positioning is incomplete:\n${lines}\nFinish the brand files first, then continue creation. You can still refine them during creation.`,
+      `Cannot start content creation because brand positioning is incomplete:\n${lines}\nAsk the agent to finish these brand files first, then continue creation. You can still refine them during creation.`,
     );
   }
 }
@@ -168,7 +168,7 @@ export async function collectRunCompletenessIssues(run: RunRecord): Promise<Comp
 
   issues.push(...(await inspectIfExists(path.join(run.path, "proposal.md"))));
   issues.push(...(await inspectIfExists(path.join(run.path, "brief.md"))));
-  issues.push(...(await inspectIfExists(path.join(run.path, "tasks.md"))));
+  issues.push(...(await inspectCampaignTasksIfExists(path.join(run.path, "tasks.md"))));
   issues.push(...(await inspectCampaignDrafts(run.path)));
   issues.push(...(await inspectCampaignReviews(run.path)));
   issues.push(...(await inspectIfExists(path.join(run.path, "retrospective.md"))));
@@ -180,7 +180,10 @@ export async function completenessIssuesForValidation(run: RunRecord): Promise<V
   const issues: ValidationIssue[] = [];
 
   for (const requirement of requirements) {
-    const fileIssues = await inspectMarkdownCompleteness(requirement.filePath);
+    const fileIssues =
+      run.workflow === "campaign" && path.basename(requirement.filePath) === "tasks.md"
+        ? await inspectCampaignTasksCompleteness(requirement.filePath)
+        : await inspectMarkdownCompleteness(requirement.filePath);
     for (const issue of fileIssues) {
       issues.push({ level: "error", path: issue.filePath, message: requirement.reason });
     }
@@ -222,6 +225,14 @@ async function inspectIfExists(filePath: string): Promise<CompletenessIssue[]> {
   }
 
   return inspectMarkdownCompleteness(filePath);
+}
+
+async function inspectCampaignTasksIfExists(filePath: string): Promise<CompletenessIssue[]> {
+  if (!(await pathExists(filePath))) {
+    return [];
+  }
+
+  return inspectCampaignTasksCompleteness(filePath);
 }
 
 async function inspectBrandReadiness(repoRoot: string): Promise<CompletenessIssue[]> {
@@ -276,9 +287,51 @@ export async function inspectMarkdownCompleteness(filePath: string): Promise<Com
   return issues;
 }
 
+async function inspectCampaignTasksCompleteness(filePath: string): Promise<CompletenessIssue[]> {
+  if (!(await pathExists(filePath))) {
+    return [{ filePath, reason: "missing file" }];
+  }
+
+  const content = await readText(filePath);
+  const body = content.replace(/^---[\s\S]*?---\n?/u, "");
+  const executionBoardIndex = body.indexOf("## Execution Board");
+  const relevantBody = executionBoardIndex === -1 ? body : body.slice(executionBoardIndex);
+  const issues: CompletenessIssue[] = [];
+
+  for (const pattern of PLACEHOLDER_PATTERNS) {
+    if (pattern.test(relevantBody)) {
+      issues.push({ filePath, reason: `contains placeholder content (${pattern.source})` });
+      break;
+    }
+  }
+
+  return issues;
+}
+
 function buildCompletenessError(stage: string, issues: CompletenessIssue[]): string {
   const lines = issues.map((issue) => `- ${issue.filePath}: ${issue.reason}`).join("\n");
-  return `Cannot proceed to ${stage} because the previous artifact is incomplete:\n${lines}\nAsk the agent to finish these files first.`;
+  const filenames = [...new Set(issues.map((issue) => path.basename(issue.filePath)))].join(", ");
+  const guidance = stageGuidance(stage);
+  return `Cannot proceed to ${stage} because the previous artifact is incomplete:\n${lines}\nFinish these files first: ${filenames}.\n${guidance}`;
+}
+
+function stageGuidance(stage: string): string {
+  switch (stage) {
+    case "draft":
+      return "Ask the agent to complete the planning or fit-check artifacts first, then come back to drafting.";
+    case "fit approval":
+      return "Ask the agent to complete fit-check.md with an explicit verdict and rationale, then rerun xhs-spec fit.";
+    case "review":
+      return "Ask the agent to finish the current draft artifact first, then rerun xhs-spec review or /xhs:review.";
+    case "iteration":
+      return "Ask the agent to finish review.md first, then rerun xhs-spec iterate or /xhs:rewrite.";
+    case "publish":
+      return "Ask the agent to finish the final draft and review artifacts first, then rerun xhs-spec publish or /xhs:publish.";
+    case "archive":
+      return "Ask the agent to finish the required final artifacts first, then rerun xhs-spec archive or /xhs:archive.";
+    default:
+      return "Ask the agent to finish these files first, then continue the workflow.";
+  }
 }
 
 async function requiredCompleteFilesForStatus(run: RunRecord): Promise<CompletenessRequirement[]> {

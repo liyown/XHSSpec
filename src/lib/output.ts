@@ -32,6 +32,9 @@ export function printStatusDetail(detail: Record<string, unknown>, asJson: boole
   console.log(`  title: ${String(detail.title)}`);
   console.log(`  path: ${String(detail.path)}`);
   console.log(`  next: ${String(detail.next)}`);
+  if (detail.human_next) {
+    console.log(`  human_next: ${String(detail.human_next)}`);
+  }
 
   const files = Array.isArray(detail.files) ? detail.files : [];
   if (files.length > 0) {
@@ -41,6 +44,30 @@ export function printStatusDetail(detail: Record<string, unknown>, asJson: boole
   if (detail.workflow === "campaign") {
     console.log(`  drafts: ${String(detail.draft_count ?? 0)}`);
     console.log(`  reviews: ${String(detail.review_count ?? 0)}`);
+    if (detail.next_note) {
+      console.log(`  next_note: ${String(detail.next_note)}`);
+    }
+    if (detail.next_action) {
+      console.log(`  next_action: ${String(detail.next_action)}`);
+    }
+    if (detail.next_note_reason) {
+      console.log(`  next_note_reason: ${String(detail.next_note_reason)}`);
+    }
+    if (detail.agent_message) {
+      console.log(`  agent_message: ${String(detail.agent_message)}`);
+    }
+    const summary = Array.isArray(detail.campaign_summary) ? detail.campaign_summary : [];
+    if (summary.length > 0) {
+      console.log(`  summary: ${summary.join(" | ")}`);
+    }
+    const timeline = Array.isArray(detail.publish_timeline) ? detail.publish_timeline : [];
+    if (timeline.length > 0) {
+      console.log(`  publish_timeline: ${timeline.join(" | ")}`);
+    }
+    const board = Array.isArray(detail.campaign_board) ? detail.campaign_board : [];
+    if (board.length > 0) {
+      console.log(`  board: ${board.join(" | ")}`);
+    }
   } else {
     console.log(`  has_review: ${String(detail.has_review ?? false)}`);
     const iterations = Array.isArray(detail.iteration_files) ? detail.iteration_files : [];
@@ -62,6 +89,28 @@ export function printStatusDetail(detail: Record<string, unknown>, asJson: boole
   if (commands.length > 0) {
     console.log(`  commands: ${commands.join(", ")}`);
   }
+
+  const incompleteFiles = Array.isArray(detail.incomplete_files) ? detail.incomplete_files : [];
+  if (incompleteFiles.length > 0) {
+    console.log(`  incomplete: ${incompleteFiles.join(", ")}`);
+  }
+
+  if (detail.agent_next && typeof detail.agent_next === "object") {
+    const agentNext = detail.agent_next as Record<string, unknown>;
+    const read = Array.isArray(agentNext.read) ? agentNext.read : [];
+    const prompts = Array.isArray(agentNext.prompts) ? agentNext.prompts : [];
+    const write = Array.isArray(agentNext.write) ? agentNext.write : [];
+
+    if (read.length > 0) {
+      console.log(`  agent_read: ${read.join(", ")}`);
+    }
+    if (prompts.length > 0) {
+      console.log(`  agent_prompts: ${prompts.join(", ")}`);
+    }
+    if (write.length > 0) {
+      console.log(`  agent_write: ${write.join(", ")}`);
+    }
+  }
 }
 
 export function printHelp(): void {
@@ -77,7 +126,7 @@ export function printHelp(): void {
   console.log("  fit --target <id> --verdict approved|rejected [--cwd <path>]");
   console.log("  iterate --target <id> [--round 2] [--note note-01] [--cwd <path>]");
   console.log("  review --target <id> [--mode light|standard] [--note note-01] [--cwd <path>]");
-  console.log("  publish --target <id> [--note note-01] [--title <title>] [--date YYYY-MM-DD] [--cwd <path>]");
+  console.log("  publish --target <id> [--note note-01] [--title <title>] [--date YYYY-MM-DD] [--style clean-card|warm-editorial|bold-contrast] [--cwd <path>]");
   console.log("  archive --target <id> [--outcome published|dropped|completed] [--cwd <path>]");
   console.log("  status [--target <id>] [--all] [--json] [--cwd <path>]");
   console.log("  validate [--target repo|<id>] [--json] [--cwd <path>]");
