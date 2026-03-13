@@ -1,17 +1,48 @@
 {
-  "name": "xhsops",
-  "version": "0.1.0",
-  "private": true,
+  "name": "xhs-spec",
+  "version": "0.1.1",
+  "description": "Repo-first CLI for operating Xiaohongshu content workflows with AI tools.",
   "type": "module",
   "packageManager": "bun@1.3.4",
   "bin": {
-    "xhsops": "./src/cli.ts"
+    "xhs-spec": "dist/cli.js",
+    "xhsops": "dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "templates",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "keywords": [
+    "xhs",
+    "xiaohongshu",
+    "cli",
+    "ai",
+    "content-ops"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/liyown/XHSSpec.git"
+  },
+  "homepage": "https://github.com/liyown/XHSSpec#readme",
+  "bugs": {
+    "url": "https://github.com/liyown/XHSSpec/issues"
   },
   "scripts": {
     "start": "bun run ./src/cli.ts",
+    "build": "bun run ./scripts/build.ts",
     "check": "bun test",
     "test": "bun test",
     "test:smoke": "bun test ./scripts/smoke.test.ts",
+    "prepack": "bun run build",
+    "pack:dry-run": "npm pack --dry-run",
+    "release:npm": "npm publish --access public",
     "docs:dev": "vitepress dev pages",
     "docs:build": "vitepress build pages",
     "docs:preview": "vitepress preview pages"

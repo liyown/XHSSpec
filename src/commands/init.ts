@@ -1,20 +1,21 @@
-import fs from "node:fs/promises";
 import path from "node:path";
 import readline from "node:readline/promises";
 import { fileURLToPath } from "node:url";
+import fs from "node:fs/promises";
 
 import type { CommandContext } from "../types.ts";
 import { getXhsopsPath } from "../repo.ts";
 import { copyDir, getStringArg, pathExists, readText, writeText } from "../utils.ts";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const TEMPLATE_REPO_DIR = path.resolve(__dirname, "..", "..", "templates", "repo", ".xhsops");
-const INTEGRATIONS_DIR = path.resolve(__dirname, "..", "..", "templates", "integrations");
 const SUPPORTED_TOOLS = ["codex", "cursor", "claude-code", "vscode"] as const;
 type SupportedTool = (typeof SUPPORTED_TOOLS)[number];
 
 export async function initCommand(context: CommandContext): Promise<void> {
   const xhsopsDir = getXhsopsPath(context.cwd);
+  const templateRepoDir = await resolveAssetPath("templates", "repo", ".xhsops");
+  const integrationsDir = await resolveAssetPath("templates", "integrations");
+
   if ((await pathExists(xhsopsDir)) && context.args.force !== true) {
     throw new Error(`.xhsops already exists in ${context.cwd}. Use --force to overwrite.`);
   }
@@ -23,9 +24,9 @@ export async function initCommand(context: CommandContext): Promise<void> {
     await fs.rm(xhsopsDir, { recursive: true, force: true });
   }
 
-  await copyDir(TEMPLATE_REPO_DIR, xhsopsDir);
+  await copyDir(templateRepoDir, xhsopsDir);
   const tools = await resolveTools(context);
-  await installToolIntegrations(context.cwd, tools);
+  await installToolIntegrations(context.cwd, integrationsDir, tools);
   await recordSelectedTools(xhsopsDir, tools);
 
   console.log(`Initialized XHSOps repo in ${xhsopsDir}`);
@@ -85,9 +86,13 @@ function parseTools(input: string): SupportedTool[] {
   return [...new Set(tools)];
 }
 
-async function installToolIntegrations(repoRoot: string, tools: SupportedTool[]): Promise<void> {
+async function installToolIntegrations(
+  repoRoot: string,
+  integrationsDir: string,
+  tools: SupportedTool[],
+): Promise<void> {
   for (const tool of tools) {
-    const sourceDir = path.join(INTEGRATIONS_DIR, tool);
+    const sourceDir = path.join(integrationsDir, tool);
     if (!(await pathExists(sourceDir))) {
       continue;
     }
@@ -101,4 +106,21 @@ async function recordSelectedTools(xhsopsDir: string, tools: SupportedTool[]): P
   const current = await readText(configPath);
   const next = `${current.trimEnd()}\ninstalled_tools:\n${tools.map((tool) => `  - ${tool}`).join("\n")}\n`;
   await writeText(configPath, next);
+}
+
+async function resolveAssetPath(...segments: string[]): Promise<string> {
+  const candidateRoots = [
+    path.resolve(__dirname, "..", ".."),
+    path.resolve(__dirname, ".."),
+    process.cwd(),
+  ];
+
+  for (const root of candidateRoots) {
+    const candidate = path.join(root, ...segments);
+    if (await pathExists(candidate)) {
+      return candidate;
+    }
+  }
+
+  throw new Error(`Unable to locate packaged asset: ${segments.join("/")}`);
 }

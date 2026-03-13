@@ -67,14 +67,35 @@ XHSOps 是为所有程序员同行做的。
 
 ---
 
+## 安装
+
+推荐直接通过 npm 安装：
+
+```bash
+npm install -g xhs-spec
+```
+
+不想全局安装的话，也可以直接运行：
+
+```bash
+npx xhs-spec init --tools claude-code
+```
+
+如果你想提供一条一键安装命令，可以直接复用仓库里的安装脚本：
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/liyown/XHSSpec/main/scripts/install.sh | sh
+```
+
+脚本默认执行 `npm install -g xhs-spec`。
+
+安装后主命令为 `xhs-spec`，同时保留 `xhsops` 作为兼容别名。
+
 ## 快速开始
 
 ```bash
-# 1. 安装（只需要 Bun）
-bun install
-
-# 2. 初始化项目
-xhsops init --tools claude-code
+# 1. 初始化项目
+xhs-spec init --tools claude-code
 ```
 
 然后在 AI 工具里，直接说：
@@ -213,17 +234,61 @@ XHSOps 有三种工作流：
 
 **Q: 我用的是 Windows 怎么办？**
 
-目前推荐在 macOS/Linux 上运行，或者用 WSL。
+可以。推荐直接使用 `npm` 安装；如果你走 shell 脚本方式，建议在 macOS/Linux 或 WSL 下执行。
 
 **Q: 这个工具是免费的吗？**
 
 是的，完全免费，开源项目。
 
+## 发布到 npm
+
+这个仓库已经补齐了 npm 发布所需的构建和脚本：
+
+```bash
+# 1. 安装开发依赖
+bun install
+
+# 2. 运行测试
+bun run test
+
+# 3. 构建 CLI
+bun run build
+
+# 4. 检查打包内容
+npm pack --dry-run
+
+# 5. 登录并发布
+npm login
+npm publish --access public
+```
+
+也可以直接用仓库内脚本串起来：
+
+```bash
+./scripts/release-npm.sh --access public
+```
+
+构建后会生成 `dist/cli.js`，npm 包只会携带运行时必须的 `dist/`、`templates/` 和 `README.md`。
+
+## 文档发布
+
+文档的打包和上传现在走 GitHub Actions，不再依赖把构建产物手动提交进仓库。
+
+- 工作流文件: [docs.yml](/Users/liuyaowen/Workspace/xhs/.github/workflows/docs.yml)
+- 构建命令: `bun run docs:build`
+- 构建产物目录: `.site/`
+- 触发条件: 推送到 `main` 且命中文档相关文件，或手动触发
+
+如果你要启用 GitHub Pages:
+
+1. 在 GitHub 仓库设置里把 Pages Source 设为 `GitHub Actions`
+2. 合并到 `main` 后，Actions 会自动构建并部署
+
 ---
 
 ## 技术栈
 
-- **运行时**: Bun
+- **运行时**: Node.js（发布产物） / Bun（开发与测试）
 - **语言**: TypeScript
 - **存储**: 文件系统（Markdown/YAML）
 - **AI 集成**: Claude Code, Cursor, VS Code, Cline
