@@ -3,7 +3,7 @@
 > 在 Claude Code、Codex、Cursor、VS Code 这类 AI 编码环境里，把小红书运营变成一个可复用、可归档、可续写的内容系统。
 
 <p align="center">
-  <img src="./assets/index.png" alt="XHSSpec cover" width="960" />
+  <img src="https://oss.liuyaowen.cn/images/index.png" alt="XHSSpec cover" width="960" />
 </p>
 
 <p align="center">

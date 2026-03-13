@@ -6,7 +6,7 @@ hero:
   text: "把小红书运营变成一个能复用的系统"
   tagline: "在 Claude Code、Codex、Cursor、VS Code 里，用 slash command 驱动选题、写稿、审稿、发布和归档。"
   image:
-    src: /assets/index.png
+    src: https://oss.liuyaowen.cn/images/index.png
     alt: XHSSpec cover
   actions:
     - theme: brand
