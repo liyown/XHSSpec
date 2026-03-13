@@ -58,9 +58,7 @@ XHSSpec 解决的就是这个问题。
 
 ## What It Feels Like
 
-你不是先打开一个 SaaS 面板。
-
-你是在自己熟悉的 AI 工具里直接说：
+和写代码一样，在自己熟悉的 AI 工具里直接说：
 
 ```text
 /xhs:quick
