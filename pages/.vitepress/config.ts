@@ -3,10 +3,10 @@ import { join } from "node:path";
 import { defineConfig } from "vitepress";
 
 export default defineConfig({
-  title: "XHSOps",
+  title: "XHSSpec",
   description: "小红书内容运营的正确打开方式 - 在 AI 工具里用 slash command 完成整个工作流",
   lang: "zh-CN",
-  base: "/XHSOps/",
+  base: "/XHSSpec/",
   cleanUrls: true,
   outDir: "../docs",
   buildEnd(siteConfig) {
