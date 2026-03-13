@@ -29,7 +29,7 @@ if (result.exitCode !== 0) {
 const original = await Bun.file(outfile).text();
 const withShebang = original.startsWith("#!")
   ? original
-  : `#!/usr/bin/env node\n${original}`;
+  : `#!/usr/bin/env bun\n// @bun\n${original}`;
 
 await Bun.write(outfile, withShebang);
 await chmod(outfile, 0o755);
