@@ -1,4 +1,4 @@
-# XHSOps
+# XHSSpec
 
 > 在 Claude Code 里打 `/xhs:quick`，一篇笔记就写好了。经验还能沉淀下来。
 
