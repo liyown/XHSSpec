@@ -9,7 +9,7 @@
 
 <p>
   <a href="https://github.com/liyown/XHSSpec">GitHub</a> ·
-  <a href="liyown.github.io/XHSSpec/">Docs</a> ·
+  <a href="https://liyown.github.io/XHSSpec/">Docs</a> ·
   <a href="https://www.npmjs.com/package/xhs-spec">npm</a>
 </p>
 
