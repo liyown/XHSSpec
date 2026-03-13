@@ -287,7 +287,7 @@ Knowledge 就是来解决这个问题的。
 
 - 初始化项目结构
 - 创建目录和文件
-- 管理状态流转（initialized → drafting → reviewed → done）
+- 管理状态流转（created → drafting → reviewed → done）
 - 校验完整性（检查 required 字段有没有填）
 - 落盘保存（把产物写到该写的地方）
 

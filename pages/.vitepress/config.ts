@@ -4,7 +4,7 @@ import { defineConfig } from "vitepress";
 
 export default defineConfig({
   title: "XHSSpec",
-  description: "小红书内容运营的正确打开方式 - 在 AI 工具里用 slash command 完成整个工作流",
+  description: "在 Claude Code、Codex、Cursor、VS Code 里，把小红书运营变成一个可复用、可归档、可续写的内容系统。",
   lang: "zh-CN",
   base: "/XHSSpec/",
   cleanUrls: true,
@@ -16,22 +16,27 @@ export default defineConfig({
     nav: [
       { text: "首页", link: "/" },
       { text: "快速开始", link: "/guide/getting-started" },
+      { text: "为什么用它", link: "/concepts/why-xhs-spec" },
+      { text: "适合谁", link: "/use-cases" },
+      { text: "示例", link: "/examples" },
       { text: "工作流", link: "/workflows/quick" },
       { text: "集成", link: "/integrations/claude-code" },
     ],
     sidebar: [
       {
-        text: "指南",
+        text: "开始使用",
         items: [
           { text: "快速开始", link: "/guide/getting-started" },
           { text: "第一次完整运行", link: "/guide/first-run" },
         ],
       },
       {
-        text: "核心概念",
+        text: "理解 XHSSpec",
         items: [
           { text: "为什么做这个", link: "/concepts/why-xhs-spec" },
           { text: "核心模型", link: "/concepts/core-model" },
+          { text: "谁适合用", link: "/use-cases" },
+          { text: "真实示例", link: "/examples" },
         ],
       },
       {
@@ -52,7 +57,7 @@ export default defineConfig({
         ],
       },
       {
-        text: "参考",
+        text: "参考资料",
         items: [
           { text: "CLI 命令", link: "/reference/cli" },
           { text: "项目结构", link: "/reference/repo-structure" },

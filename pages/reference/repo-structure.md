@@ -42,9 +42,11 @@ XHSSpec 将仓库划分为两层空间，分别承担不同职责。
 │   └── 2026-03-13/
 │       └── quick-xxx-标题/
 │           ├── note.md
-│           ├── cover-brief.md
-│           ├── assets.md
-│           └── publish-guide.md
+│           ├── first-screen.md
+│           ├── visual-plan.md
+│           ├── demo.html
+│           ├── posting-guide.md
+│           └── post-meta.yaml
 └── ...
 ```
 
@@ -113,6 +115,8 @@ agent 在各阶段的输出模板，确保产出格式一致。
 最终给人看的发布制品，按日期组织。每个发布包含：
 
 - `note.md` — 终稿正文
-- `cover-brief.md` — 封面设计要求
-- `assets.md` — 配图素材
-- `publish-guide.md` — 发布引导
+- `first-screen.md` — 首屏策略和封面文案方向
+- `visual-plan.md` — 图文拆解、配图和截图建议
+- `demo.html` — 可截图的演示稿
+- `posting-guide.md` — 发布引导
+- `post-meta.yaml` — 发布元数据

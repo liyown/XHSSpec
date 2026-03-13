@@ -112,6 +112,8 @@ xhs-spec archive --target trend-xxx --outcome dropped
 
 outcome 取值：`completed` / `published` / `dropped`
 
+archive 会生成 `retrospective.md`，并把结构化 lesson 写回 `.xhsspec/knowledge/*.md`。如果这个 run 已经生成过发布包，archive 还会自动把 `publish/...` 路径挂进 retrospective 和 knowledge block，方便后续续写和复盘。
+
 ---
 
 ## 查看状态

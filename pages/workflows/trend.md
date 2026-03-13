@@ -240,12 +240,12 @@ AI 生成了 fit-check.md。
 ### 热点通过
 
 ```
-initialized → fit-checking → fit-approved → drafting → reviewed → done → archived
+created → fit-checking → fit-approved → drafting → reviewed → done → archived
 ```
 
 | 状态 | 意味着什么 |
 |------|------------|
-| `initialized` | 热点已创建，trend-brief 正在形成 |
+| `created` | 热点已创建，等待 agent 补完 trend-brief 和 fit-check |
 | `fit-checking` | 正在判断热点与品牌是否匹配 |
 | `fit-approved` | 允许进入草稿阶段 |
 | `drafting` | 初稿正在撰写 |
@@ -256,12 +256,12 @@ initialized → fit-checking → fit-approved → drafting → reviewed → done
 ### 热点放弃
 
 ```
-initialized → fit-checking → fit-rejected → archived
+created → fit-checking → fit-rejected → archived
 ```
 
 | 状态 | 意味着什么 |
 |------|------------|
-| `initialized` | 热点已创建 |
+| `created` | 热点已创建 |
 | `fit-checking` | 正在判断适切性 |
 | `fit-rejected` | 热点被放弃 |
 | `archived` | 决策过程已归档，经验沉淀 |

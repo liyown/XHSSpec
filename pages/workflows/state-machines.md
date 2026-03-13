@@ -37,7 +37,7 @@
 
 | 步骤 | Quick | Trend | Campaign |
 |------|-------|-------|----------|
-| 起点 | initialized | initialized | initialized |
+| 起点 | created | created | created |
 | 第二步 | drafting | fit-checking | planned |
 | 第三步 | reviewed | fit-approved / fit-rejected | briefing |
 | 第四步 | iterating / done | drafting | drafting |
@@ -53,7 +53,7 @@
 
 | 状态 | 意味着什么 |
 |------|------------|
-| `initialized` | 选题已创建，brief 正在形成 |
+| `created` | 选题已创建，等待 agent 补完 brief 和首稿 |
 | `drafting` | 初稿已经生成，等待审核 |
 | `reviewed` | 审核意见已经给出 |
 | `iterating` | 正在根据审核意见改写 |
@@ -64,7 +64,7 @@
 
 | 状态 | 意味着什么 |
 |------|------------|
-| `initialized` | 热点已创建，trend-brief 正在形成 |
+| `created` | 热点已创建，等待 agent 补完 trend-brief 和 fit-check |
 | `fit-checking` | 正在判断热点与品牌是否匹配 |
 | `fit-approved` | 允许进入草稿阶段 |
 | `fit-rejected` | 热点被放弃，但判断过程值得归档 |
@@ -77,7 +77,7 @@
 
 | 状态 | 意味着什么 |
 |------|------------|
-| `initialized` | campaign 已创建 |
+| `created` | campaign 已创建，等待 agent 补 proposal、brief、tasks |
 | `planned` | proposal 已生成，规划已完成 |
 | `briefing` | campaign brief 和 tasks 正在形成 |
 | `drafting` | 至少有一篇 note 进入写作 |
@@ -85,6 +85,32 @@
 | `iterating` | 改写中（至少一篇 note 在改写） |
 | `ready` | 所有笔记完成审核，可以发布 |
 | `archived` | campaign 经验已经沉淀 |
+
+---
+
+## `created` 不是正式创作状态
+
+`created` 的意思不是「已经开始写了」，而是：
+
+- run 目录已经建好了
+- 初始 artifact 已经生成了
+- 现在轮到 agent 接手，去补第一轮内容
+
+它是一个 handoff 状态，不是长期停留状态。
+
+### `created` 怎么进入正式流程
+
+| Workflow | Agent 先完成什么 | 然后进入什么正式状态 |
+|----------|------------------|----------------------|
+| Quick | `brief.md` 和 `draft.md` | 下一次 deterministic 动作通常是 `review`，run 进入 `reviewed`；在此之前你可以把它理解成首稿阶段 |
+| Trend | `trend-brief.md` 和 `fit-check.md` | 执行 `fit` 后进入 `fit-approved` 或 `fit-rejected` |
+| Campaign | `proposal.md`、`brief.md`、`tasks.md` | 执行 `draft` 后进入 `drafting` |
+
+所以 `created` 的职责很单纯：
+
+**让 CLI 先把骨架搭好，再让 agent 去完成第一轮 artifact。**
+
+它不应该被拿来表示「流程卡住了很久」，也不应该被当成错误状态。
 
 ---
 

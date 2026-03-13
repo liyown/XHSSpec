@@ -4,11 +4,11 @@
 
 ### XHSSpec 是什么？
 
-一个帮你管理小红书内容创作的 CLI 工具。它把写笔记这件事变成标准化的流程，所有内容都存在文件里，方便回顾和复用。
+一个运行在 AI coding tools 里的小红书内容运营系统。它把选题、draft、review、publish、archive 这些动作落成 repo 里的可复用资产，而不只是聊天记录。
 
 ### 我不会编程能用吗？
 
-能。只需要会复制粘贴命令行就行。剩下的让 AI 来做。
+能，只要你愿意在 Claude Code、Codex、Cursor 这类工具里和 agent 配合工作。你不需要理解底层实现，但最好愿意维护最基本的 brand / strategy 文件。
 
 ### 这个工具是免费的吗？
 
@@ -66,7 +66,11 @@
 
 ### 为什么要 archive？
 
-把「做完」变成「经验」。每次 archive 后，内容会回流到 knowledge/ 目录，AI 下次写笔记时会自动参考这些经验。
+把「做完」变成「经验」。每次 archive 后，内容会回流到 knowledge/ 目录，AI 下次写笔记时会自动参考这些经验。现在 archive 还会把关联的 publish package 一起挂进去，方便你下次回头看“当时到底发了什么”。
+
+### 以后会不会支持跨 run 学习？
+
+会，但不是第一阶段重点。当前版本先保证每次 archive 都留下可追踪的 retrospective 和 knowledge block。后续再叠加跨 run 聚合、`learn` 命令和 spec update suggestion。
 
 ### 我能不能跳过 archive？
 

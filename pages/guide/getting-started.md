@@ -1,214 +1,206 @@
 # 快速开始
 
-好了，别想太多，跟我来。
+这份指南的目标不是教你记命令。
 
-两分钟，让你跑通第一个内容。
+它的目标是让你在 3 分钟内明白一件事：
+
+**XHSSpec 的正确使用方式，是在 AI 工具里用 slash command 开始创作。**
+
+CLI 只负责初始化和确定性动作。
+真正的前台入口，是 Claude Code、Codex、Cursor、VS Code 里的 agent。
 
 ---
 
-## 第一步：装好依赖
+## 先理解一件事
 
-你只需要一个东西：Bun。这是新一代的 JavaScript 运行时，跑起来比 Node 快得多，而且安装超级简单。
+如果你把 XHSSpec 当成一个 CLI 工具来用，你会觉得它有点重。
 
-打开你的终端，输入：
+如果你把它当成一个装进 AI coding tool 里的内容运营系统来用，它就会非常顺。
+
+所以推荐心智是：
+
+```text
+我负责说目标
+AI 负责推进 workflow
+repo 负责保存资产
+```
+
+---
+
+## 第 1 步：初始化你的工作空间
+
+在你准备做内容的目录里执行一次：
 
 ```bash
-bun install
+xhs-spec init --tools claude-code
 ```
 
-然后等着。看到 `✨ Done` 就完事了。
-
-如果你还没有装 Bun，一行命令就搞定：
+如果你主要用 Codex / Cursor / VS Code：
 
 ```bash
-curl -fsSL https://bun.sh/install | bash
+xhs-spec init --tools codex,cursor,vscode
 ```
 
-装好了？好，我们继续。
+执行完之后，XHSSpec 会帮你做好两类东西：
+
+### 1. repo 资产
+
+- `.xhsspec/brand/`
+- `.xhsspec/strategy/`
+- `.xhsspec/specs/`
+- `.xhsspec/prompts/`
+- `.xhsspec/commands/`
+- `.xhsspec/knowledge/`
+
+### 2. 工具集成
+
+- `CLAUDE.md`
+- `SKILL.md`
+- `AGENTS.md`
+- `.cursor/`
+- `.vscode/`
+
+你不需要自己手装 skill。
+`init` 已经把“这个 repo 应该怎么被 agent 使用”一起装好了。
 
 ---
 
-## 第二步：初始化
+## 第 2 步：先把品牌定位补到能用
 
-在你的项目目录里（就是你想放内容的地方），跑：
+第一次使用之前，至少补这 5 个文件：
 
-```bash
-xhs-spec init
-```
+- `.xhsspec/brand/profile.md`
+- `.xhsspec/brand/audience.md`
+- `.xhsspec/brand/offer.md`
+- `.xhsspec/brand/tone.md`
+- `.xhsspec/brand/taboo.md`
 
-跑完这行，你的目录里会多出一个 `.xhsspec/` 文件夹。恭喜你，你已经有自己的内容运营仓库了。
+为什么这一步不能省？
 
-这个文件夹里现在还是空的，别管它。后面 AI 会帮你往里塞东西。
+因为如果品牌上下文是空的，AI 写出来的东西只会是“看起来像内容”，不是“像你的内容”。
 
-然后呢？
+你不需要一开始写得特别完整。
+只要能回答这几个问题就够：
 
-然后你基本上就不用再碰终端了。之后的所有操作，都在你常用的 AI 工具（Claude Code、Cursor、Windsurf 随便哪个）里完成。
-
----
-
-## 第三步：填品牌资料
-
-这是唯一需要你动手的事，也是最重要的事。
-
-为什么？因为 AI 要靠这些来理解你是谁、你在对谁说话、你说的话是什么风格。没有这些，它写出来的东西就是一堆没有灵魂的文字。
-
-打开这几个文件，照着模板填：
-
-```
-.xhsspec/brand/
-├── profile.md    # 你是谁
-├── audience.md   # 你的读者是谁
-├── offer.md      # 你提供什么价值
-├── tone.md       # 你的语气风格
-└── taboo.md      # 你不写什么
-```
-
-我一家一家说：
-
-**profile.md** —— 你是谁。不用写人生故事，几句话就行。比如：「程序员，8 年工作经验，现在做 AI 创业。」
-
-**audience.md** —— 谁在看你的笔记。同样，几句话：「同样是程序员，工作 1-5 年，想提升效率但不想卷的人。」
-
-**offer.md** —— 你能帮他们解决什么问题。「帮助程序员用 AI 工具把重复工作自动化，省下时间做有意思的事。」
-
-**tone.md** —— 你怎么说话。「像在和技术朋友聊天，直接、实在、偶尔带点吐槽。」
-
-**taboo.md** —— 什么你不写。「不写纯吹水的 AI 焦虑，不写程序员之外的领域，不写太长没人看完的东西。」
-
-不用写太多，能有个大概就行。5 分钟就能填完。
-
-填完这个，你会发现一个有趣的事——以后 AI 写的每篇内容，都带着你的影子。
+- 我是谁？
+- 我写给谁看？
+- 我提供什么价值？
+- 我说话是什么感觉？
+- 我不想写什么？
 
 ---
 
-## 第四步：开干
+## 第 3 步：回到 AI 工具里，真正开始
 
-打开你的 AI 工具，直接说：
+从现在开始，你不该围着 CLI 转。
 
+你应该回到你的 AI 工具里，直接发起工作流。
+
+### 如果你想先写一篇
+
+在 Claude Code / Codex / Cursor 里说：
+
+```text
+/xhs:quick
+
+写一篇给技术创业者看的内容：
+为什么团队不该继续把 AI 当临时写手。
 ```
-帮我写一篇：程序员如何用 AI 做周报
+
+### 如果你想先判断一个热点
+
+```text
+/xhs:hot
+
+帮我判断这个热点值不值得写：
+OpenClaw / 个人 AI 助手。
 ```
 
-就这么简单。
+### 如果你想做一个系列
 
-AI 会自己：
+```text
+/xhs:plan
 
-1. 读取你的品牌配置——它知道你是谁了
-2. 创建一个工作目录——在 `.xhsspec/quick/` 下面
-3. 生成一个 brief——就是"我要怎么写"的计划
-4. 写出第一版初稿——draft.md
-
-你可能会看到一些 `<placeholder>...</placeholder>` 的标记。这是 AI 告诉你：「这块我没想好，你给点意见。」
-
-你只需要做三件事：
-
-- 确认方向对不对
-- 提意见：「这里可以更直接一点」「例子可以换一个」
-- 让它改：「帮我改一下第三段」
-
-别担心说错话。AI 不会生气，你随时可以推翻重来。
+帮我做一个 3 篇系列：
+主题是 AI workflow，不只是 prompt。
+```
 
 ---
 
-## 第五步：审核和发布
+## AI 会帮你做什么
 
-稿子改得差不多了，你继续在 AI 工具里说：
+你发起 slash command 之后，agent 应该会：
 
-```
-帮我审核刚才那篇
-```
+1. 读取 `.xhsspec/brand/*`
+2. 读取 `.xhsspec/strategy/*`
+3. 读取当前 workflow 对应的 command / prompt / spec
+4. 创建或继续正确的 run
+5. 写入相应 artifacts
+6. 告诉你下一步该 review、publish 还是 archive
 
-或者：
-
-```
-/xhs:review
-```
-
-AI 会根据一套规则检查：
-
-- 语气对不对——还是不是你的声音
-- CTA 放的位置合不合理——有没有在合适的地方要互动
-- 有没有 placeholder 没收干净——有没有没填完的地方
-- 结构清不清晰——开头能不能抓住人，中间有没有干货，结尾有没有引导
-
-审完了会生成一个 `review.md`，告诉你哪里通过、哪里要改。
-
-如果需要改，你说：
-
-```
-根据 review 意见帮我改一下
-```
-
-或者：
-
-```
-/xhs:iterate
-```
-
-这个循环可以跑好几轮，直到你满意为止。
-
-稿子定稿了，终于到了发布这一步。你说：
-
-```
-帮我生成发布包
-```
-
-或者：
-
-```
-/xhs:publish
-```
-
-这回你会得到一个文件夹，里面有：
-
-- 终稿正文——可以直接复制粘贴到小红书
-- 封面方向——标题怎么起、关键词是什么
-- 配图建议——配什么图、哪里配
-- 发布检查清单——发之前再确认一遍
-
-这时候才真的是「可以发」的状态。
+换句话说，**你看到的应该是一条工作流，不是一段随手对话。**
 
 ---
 
-## 第六步：归档
+## 第一次推荐你这样用
 
-最后一步，别忘了归档。你说：
+如果你是第一次上手，我建议你走这条最短路径：
 
+```text
+init
+  -> 填 brand
+  -> /xhs:quick
+  -> /xhs:review
+  -> /xhs:publish
+  -> /xhs:archive
 ```
-/xhs:archive
-```
 
-或者：
+为什么先从 Quick 开始？
 
-```
-帮我归档
-```
+因为这条线最短，也最容易让你感受到 XHSSpec 的核心价值：
 
-AI 会把这次创作的经验教训写进 `.xhsspec/knowledge/winning-patterns.md`。下次它帮你写新内容的时候，会参考这些经验。
-
-这是 XHSSpec 最迷人的地方——不是「聊完就结束」，而是每一次都在积累。
+- AI 不只是写草稿
+- 它还会产生 review
+- 会给你 publish package
+- 会留下可归档的知识
 
 ---
 
-## 就这么点事
+## 你会在 repo 里看到什么
 
-真的，别想复杂了。
+如果你走一轮 Quick，大概会留下这些：
 
-1. `bun install` + `xhs-spec init` → 一次性
-2. 填 5 个 brand 文件 → 一次性
-3. 之后就在 AI 工具里说话
+```text
+.xhsspec/quick/<run-id>/
+  brief.md
+  draft.md
+  review.md
+  retrospective.md
 
-Slash command 是你用的，CLI 是 AI 用的。你在前面冲锋，AI 在后面帮你把一切都管理得井井有条。
-
-常用命令就这几个：
-
+publish/<date>/<run-id>-<title>/
+  note.md
+  first-screen.md
+  visual-plan.md
+  demo.html
+  posting-guide.md
+  post-meta.yaml
 ```
-/xhs:quick    → 创建新选题
-/xhs:review   → 审核初稿
-/xhs:iterate  → 根据意见修改
-/xhs:publish  → 生成发布包
-/xhs:archive  → 归档并总结经验
-/xhs:status   → 看看现在进行到哪一步了
-```
 
-跑起来吧。
+这就是 XHSSpec 和普通 AI 聊天最大的差别。
+
+你留下来的不是“一段对话”。
+你留下来的是“一套以后还能继续用的资产”。
+
+---
+
+## 如果你只记住一件事
+
+请记住这一句：
+
+**XHSSpec 最适合的用法，不是你手敲很多命令，而是你在 AI 工具里发起 slash command，让 agent 带着你走完整个流程。**
+
+下一步建议直接看：
+
+- [第一次完整运行](/guide/first-run)
+- [Claude Code 集成](/integrations/claude-code)
+- [Codex / Cursor / VS Code 集成](/integrations/codex-cursor-vscode)
