@@ -8,7 +8,7 @@ export default defineConfig({
   lang: "zh-CN",
   base: "/XHSSpec/",
   cleanUrls: true,
-  outDir: "../docs",
+  outDir: "../.site",
   buildEnd(siteConfig) {
     writeFileSync(join(siteConfig.outDir, ".nojekyll"), "");
   },
