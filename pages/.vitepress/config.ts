@@ -30,7 +30,7 @@ export default defineConfig({
       {
         text: "核心概念",
         items: [
-          { text: "为什么做这个", link: "/concepts/why-xhsops" },
+          { text: "为什么做这个", link: "/concepts/why-xhs-spec" },
           { text: "核心模型", link: "/concepts/core-model" },
         ],
       },

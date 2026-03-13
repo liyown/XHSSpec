@@ -76,5 +76,5 @@ export async function archiveCommand(context: CommandContext): Promise<void> {
   console.log(`Read with agent: ${refs.commands.find((ref) => ref.endsWith("xhs-archive.md")) ?? refs.commands[0]}`);
   console.log(`Specs: ${refs.specs.join(", ")}`);
   console.log(`Prompts: ${refs.prompts.join(", ")}`);
-  console.log("Knowledge updated under .xhsops/knowledge/");
+  console.log("Knowledge updated under .xhsspec/knowledge/");
 }

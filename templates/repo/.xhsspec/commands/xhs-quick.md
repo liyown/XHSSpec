@@ -4,15 +4,15 @@ Use this command when the user wants to turn a single idea into a Xiaohongshu no
 
 ## Read
 
-- `.xhsops/config.yaml`
-- `.xhsops/brand/*`
-- `.xhsops/strategy/*`
-- `.xhsops/specs/note.spec.md`
-- `.xhsops/specs/creation.spec.md`
-- `.xhsops/knowledge/winning-patterns.md`
+- `.xhsspec/config.yaml`
+- `.xhsspec/brand/*`
+- `.xhsspec/strategy/*`
+- `.xhsspec/specs/note.spec.md`
+- `.xhsspec/specs/creation.spec.md`
+- `.xhsspec/knowledge/winning-patterns.md`
 - target quick run `brief.md`
-- `.xhsops/prompts/quick-brief.md`
-- `.xhsops/prompts/quick-draft.md`
+- `.xhsspec/prompts/quick-brief.md`
+- `.xhsspec/prompts/quick-draft.md`
 
 ## Write
 

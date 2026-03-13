@@ -9,7 +9,7 @@ Use this command to close a workflow and write lessons back to the repo.
 - review
 - optional outcome notes
 - relevant knowledge files
-- `.xhsops/prompts/archive.md`
+- `.xhsspec/prompts/archive.md`
 
 ## Write
 

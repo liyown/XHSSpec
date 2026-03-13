@@ -71,7 +71,7 @@ export async function draftCommand(context: CommandContext): Promise<void> {
 
     console.log(`Prepared campaign draft: ${run.id} / ${noteId}`);
     console.log(draftPath);
-    console.log(`Next: /xhs:draft or xhsops review --target ${run.id}`);
+    console.log(`Next: /xhs:draft or xhs-spec review --target ${run.id}`);
     return;
   }
 
@@ -82,5 +82,5 @@ export async function draftCommand(context: CommandContext): Promise<void> {
   await updateRunStatus(run, "drafting", now);
   console.log(`${run.workflow === "trend" ? "Trend" : "Quick"} run ${run.id} is ready for drafting.`);
   console.log(path.join(run.path, "draft.md"));
-  console.log(`Next: ${run.workflow === "trend" ? "/xhs:draft or xhsops review --target " : "/xhs:quick or xhsops review --target "}${run.id}`);
+  console.log(`Next: ${run.workflow === "trend" ? "/xhs:draft or xhs-spec review --target " : "/xhs:quick or xhs-spec review --target "}${run.id}`);
 }

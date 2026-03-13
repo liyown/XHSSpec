@@ -4,9 +4,9 @@ Read:
 
 - latest final draft
 - latest review
-- `.xhsops/specs/publish.spec.md`
-- `.xhsops/specs/creation.spec.md`
-- `.xhsops/brand/*`
+- `.xhsspec/specs/publish.spec.md`
+- `.xhsspec/specs/creation.spec.md`
+- `.xhsspec/brand/*`
 - publish package files if they already exist
 
 Write:

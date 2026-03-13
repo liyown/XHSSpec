@@ -5,8 +5,7 @@
   "type": "module",
   "packageManager": "bun@1.3.4",
   "bin": {
-    "xhs-spec": "dist/cli.js",
-    "xhsops": "dist/cli.js"
+    "xhs-spec": "dist/cli.js"
   },
   "files": [
     "dist",

@@ -1,15 +1,15 @@
-# XHSOps Tool Integration
+# XHSSpec Tool Integration
 
-This repo uses `xhsops` as a repo-first, spec-driven Xiaohongshu operations workflow.
+This repo uses `xhs-spec` as a repo-first, spec-driven Xiaohongshu operations workflow.
 
 ## Required Context
 
 Always read:
 
-- `.xhsops/config.yaml`
-- `.xhsops/brand/*`
-- `.xhsops/strategy/*`
-- `.xhsops/specs/*`
+- `.xhsspec/config.yaml`
+- `.xhsspec/brand/*`
+- `.xhsspec/strategy/*`
+- `.xhsspec/specs/*`
 
 Read current run artifacts when the user is working on a specific campaign, quick note, or trend response.
 
@@ -25,7 +25,7 @@ Read current run artifacts when the user is working on a specific campaign, quic
 
 ## Deterministic Boundary
 
-- Use `xhsops` CLI for initialization, state changes, validation, and status checks.
+- Use `xhs-spec` CLI for initialization, state changes, validation, and status checks.
 - Use the agent for brand interpretation, drafting, review reasoning, and retrospective synthesis.
 
 ## Placeholder Protocol

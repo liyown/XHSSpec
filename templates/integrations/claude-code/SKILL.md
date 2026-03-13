@@ -1,21 +1,21 @@
 ---
-name: xhs-ops
+name: xhs-spec
 description: Use when managing Xiaohongshu content operations in a repo-first, spec-driven workflow inside Claude Code: quick notes, trend reactions, campaign planning, review, rewrite, and archive.
 user-invocable: true
 ---
 
-# XHSOps Claude Skill
+# XHSSpec Claude Skill
 
-Use `.xhsops/` as the source of truth.
+Use `.xhsspec/` as the source of truth.
 
 ## Always Read
 
-- `.xhsops/config.yaml`
-- `.xhsops/brand/*`
-- `.xhsops/strategy/*`
-- `.xhsops/specs/*`
-- `.xhsops/commands/*.md`
-- `.xhsops/prompts/*.md`
+- `.xhsspec/config.yaml`
+- `.xhsspec/brand/*`
+- `.xhsspec/strategy/*`
+- `.xhsspec/specs/*`
+- `.xhsspec/commands/*.md`
+- `.xhsspec/prompts/*.md`
 
 ## Workflow Routing
 

@@ -7,7 +7,7 @@ import { expect, test } from "bun:test";
 import { writeIterationDraft } from "../src/services/workflow.ts";
 
 test("writeIterationDraft marks iterating and injects version", async () => {
-  const tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "xhsops-workflow-"));
+  const tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "xhs-spec-workflow-"));
   const draftPath = path.join(tempRoot, "draft.v2.md");
   const source = `---\nid: draft-1\nworkflow: quick\nstatus: reviewed\nupdated_at: 2026-03-12T00:00:00.000Z\n---\n\n# Draft\n`;
 

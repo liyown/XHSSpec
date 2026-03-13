@@ -1,4 +1,4 @@
-# XHSOps Start Here
+# XHSSpec Start Here
 
 Use this checklist before your first real content run.
 
@@ -24,25 +24,25 @@ Brand positioning must be complete before creation starts. You can keep refining
 
 ### Single note
 
-1. Run `xhsops quick --idea "..."`
+1. Run `xhs-spec quick --idea "..."`
 2. Use `/xhs:quick`
-3. Run `xhsops review --target <id>`
+3. Run `xhs-spec review --target <id>`
 4. Use `/xhs:rewrite`
-5. Run `xhsops publish --target <id>`
+5. Run `xhs-spec publish --target <id>`
 6. Use `/xhs:publish`
-7. Run `xhsops archive --target <id>`
+7. Run `xhs-spec archive --target <id>`
 
 ### Trend reaction
 
-1. Run `xhsops hot --topic "..."`
+1. Run `xhs-spec hot --topic "..."`
 2. Use `/xhs:hot`
-3. Run `xhsops fit --target <id> --verdict approved|rejected`
+3. Run `xhs-spec fit --target <id> --verdict approved|rejected`
 4. If approved, continue to draft and review
 5. Archive the lesson
 
 ### Structured campaign
 
-1. Run `xhsops plan --theme "..."`
+1. Run `xhs-spec plan --theme "..."`
 2. Use `/xhs:plan`
 3. Draft and review each note
 4. Archive campaign lessons

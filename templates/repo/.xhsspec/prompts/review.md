@@ -3,10 +3,10 @@
 Read:
 
 - target draft
-- `.xhsops/specs/review.spec.md`
-- `.xhsops/specs/creation.spec.md`
-- `.xhsops/brand/tone.md`
-- `.xhsops/brand/taboo.md`
+- `.xhsspec/specs/review.spec.md`
+- `.xhsspec/specs/creation.spec.md`
+- `.xhsspec/brand/tone.md`
+- `.xhsspec/brand/taboo.md`
 
 Write:
 

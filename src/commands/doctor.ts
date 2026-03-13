@@ -1,6 +1,6 @@
 import type { CommandContext } from "../types.ts";
 import { ensureRepo } from "../lib/context.ts";
-import { getXhsopsPath } from "../repo.ts";
+import { getXhsSpecPath } from "../repo.ts";
 import { listRuns, validateRepo } from "../repo.ts";
 
 export async function doctorCommand(context: CommandContext): Promise<void> {
@@ -8,15 +8,15 @@ export async function doctorCommand(context: CommandContext): Promise<void> {
   const issues = await validateRepo(context.repoRoot);
   const runs = await listRuns(context.repoRoot);
 
-  console.log("XHSOps Doctor");
+  console.log("XHSSpec Doctor");
   console.log("");
   console.log(`Repo: ${context.repoRoot}`);
   console.log(`Runs: ${runs.length}`);
   console.log(`Errors: ${issues.filter((issue) => issue.level === "error").length}`);
   console.log(`Warnings: ${issues.filter((issue) => issue.level === "warning").length}`);
-  console.log(`Specs dir: ${getXhsopsPath(context.repoRoot, "specs")}`);
-  console.log(`Commands dir: ${getXhsopsPath(context.repoRoot, "commands")}`);
-  console.log(`Prompts dir: ${getXhsopsPath(context.repoRoot, "prompts")}`);
+  console.log(`Specs dir: ${getXhsSpecPath(context.repoRoot, "specs")}`);
+  console.log(`Commands dir: ${getXhsSpecPath(context.repoRoot, "commands")}`);
+  console.log(`Prompts dir: ${getXhsSpecPath(context.repoRoot, "prompts")}`);
 
   if (issues.length > 0) {
     console.log("");

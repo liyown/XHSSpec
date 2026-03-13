@@ -7,8 +7,8 @@ import { expect, test } from "bun:test";
 import { validateRepo, validateRun } from "../src/repo.ts";
 
 test("validateRun reports missing quick workflow artifacts", async () => {
-  const tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "xhsops-repo-"));
-  const runPath = path.join(tempRoot, ".xhsops", "quick", "quick-test");
+  const tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "xhs-spec-repo-"));
+  const runPath = path.join(tempRoot, ".xhsspec", "quick", "quick-test");
 
   await fs.mkdir(runPath, { recursive: true });
   await fs.writeFile(
@@ -23,15 +23,15 @@ test("validateRun reports missing quick workflow artifacts", async () => {
 });
 
 test("validateRepo reports incomplete brand positioning as error", async () => {
-  const tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "xhsops-brand-validate-"));
-  const brandDir = path.join(tempRoot, ".xhsops", "brand");
-  const strategyDir = path.join(tempRoot, ".xhsops", "strategy");
-  const specsDir = path.join(tempRoot, ".xhsops", "specs");
+  const tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "xhs-spec-brand-validate-"));
+  const brandDir = path.join(tempRoot, ".xhsspec", "brand");
+  const strategyDir = path.join(tempRoot, ".xhsspec", "strategy");
+  const specsDir = path.join(tempRoot, ".xhsspec", "specs");
 
   await fs.mkdir(brandDir, { recursive: true });
   await fs.mkdir(strategyDir, { recursive: true });
   await fs.mkdir(specsDir, { recursive: true });
-  await fs.writeFile(path.join(tempRoot, ".xhsops", "config.yaml"), "name: test\n");
+  await fs.writeFile(path.join(tempRoot, ".xhsspec", "config.yaml"), "name: test\n");
   await fs.writeFile(path.join(brandDir, "profile.md"), "<placeholder>补充品牌定位</placeholder>\n");
   await fs.writeFile(path.join(brandDir, "audience.md"), "完整 audience\n");
   await fs.writeFile(path.join(brandDir, "offer.md"), "完整 offer\n");
@@ -51,26 +51,26 @@ test("validateRepo reports incomplete brand positioning as error", async () => {
     issues.some(
       (issue) =>
         issue.level === "error" &&
-        issue.path.endsWith(path.join(".xhsops", "brand", "profile.md")) &&
+        issue.path.endsWith(path.join(".xhsspec", "brand", "profile.md")) &&
         issue.message.includes("Brand positioning"),
     ),
   ).toBe(true);
 });
 
 test("validateRepo reports missing command and prompt contracts", async () => {
-  const tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "xhsops-contracts-"));
-  const brandDir = path.join(tempRoot, ".xhsops", "brand");
-  const strategyDir = path.join(tempRoot, ".xhsops", "strategy");
-  const specsDir = path.join(tempRoot, ".xhsops", "specs");
-  const commandsDir = path.join(tempRoot, ".xhsops", "commands");
-  const promptsDir = path.join(tempRoot, ".xhsops", "prompts");
+  const tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "xhs-spec-contracts-"));
+  const brandDir = path.join(tempRoot, ".xhsspec", "brand");
+  const strategyDir = path.join(tempRoot, ".xhsspec", "strategy");
+  const specsDir = path.join(tempRoot, ".xhsspec", "specs");
+  const commandsDir = path.join(tempRoot, ".xhsspec", "commands");
+  const promptsDir = path.join(tempRoot, ".xhsspec", "prompts");
 
   await fs.mkdir(brandDir, { recursive: true });
   await fs.mkdir(strategyDir, { recursive: true });
   await fs.mkdir(specsDir, { recursive: true });
   await fs.mkdir(commandsDir, { recursive: true });
   await fs.mkdir(promptsDir, { recursive: true });
-  await fs.writeFile(path.join(tempRoot, ".xhsops", "config.yaml"), "name: test\n");
+  await fs.writeFile(path.join(tempRoot, ".xhsspec", "config.yaml"), "name: test\n");
   await fs.writeFile(path.join(brandDir, "profile.md"), "完整 profile\n");
   await fs.writeFile(path.join(brandDir, "audience.md"), "完整 audience\n");
   await fs.writeFile(path.join(brandDir, "offer.md"), "完整 offer\n");
@@ -87,6 +87,6 @@ test("validateRepo reports missing command and prompt contracts", async () => {
 
   const issues = await validateRepo(tempRoot);
 
-  expect(issues.some((issue) => issue.path.endsWith(path.join(".xhsops", "commands", "xhs-quick.md")))).toBe(true);
-  expect(issues.some((issue) => issue.path.endsWith(path.join(".xhsops", "prompts", "quick-brief.md")))).toBe(true);
+  expect(issues.some((issue) => issue.path.endsWith(path.join(".xhsspec", "commands", "xhs-quick.md")))).toBe(true);
+  expect(issues.some((issue) => issue.path.endsWith(path.join(".xhsspec", "prompts", "quick-brief.md")))).toBe(true);
 });

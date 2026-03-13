@@ -5,11 +5,11 @@ Use this command to critique a draft against repo rules.
 ## Read
 
 - draft artifact
-- `.xhsops/brand/tone.md`
-- `.xhsops/brand/taboo.md`
-- `.xhsops/specs/review.spec.md`
-- `.xhsops/specs/creation.spec.md`
-- `.xhsops/prompts/review.md`
+- `.xhsspec/brand/tone.md`
+- `.xhsspec/brand/taboo.md`
+- `.xhsspec/specs/review.spec.md`
+- `.xhsspec/specs/creation.spec.md`
+- `.xhsspec/prompts/review.md`
 
 ## Write
 

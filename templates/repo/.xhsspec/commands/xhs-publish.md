@@ -6,10 +6,10 @@ Use this command when the user wants to turn a finished draft into a publish pac
 
 - latest final draft
 - latest review
-- `.xhsops/specs/publish.spec.md`
-- `.xhsops/specs/creation.spec.md`
-- `.xhsops/brand/*`
-- `.xhsops/prompts/publish.md`
+- `.xhsspec/specs/publish.spec.md`
+- `.xhsspec/specs/creation.spec.md`
+- `.xhsspec/brand/*`
+- `.xhsspec/prompts/publish.md`
 
 ## Write
 

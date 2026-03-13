@@ -2,11 +2,11 @@
 
 Read:
 
-- `.xhsops/brand/*`
-- `.xhsops/strategy/*`
-- `.xhsops/specs/note.spec.md`
-- `.xhsops/specs/creation.spec.md`
-- `.xhsops/knowledge/*`
+- `.xhsspec/brand/*`
+- `.xhsspec/strategy/*`
+- `.xhsspec/specs/note.spec.md`
+- `.xhsspec/specs/creation.spec.md`
+- `.xhsspec/knowledge/*`
 
 Write:
 

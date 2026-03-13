@@ -2,11 +2,11 @@
 
 Read:
 
-- `.xhsops/brand/*`
-- `.xhsops/brand/taboo.md`
-- `.xhsops/specs/trend.spec.md`
-- `.xhsops/specs/creation.spec.md`
-- `.xhsops/knowledge/trend-lessons.md`
+- `.xhsspec/brand/*`
+- `.xhsspec/brand/taboo.md`
+- `.xhsspec/specs/trend.spec.md`
+- `.xhsspec/specs/creation.spec.md`
+- `.xhsspec/knowledge/trend-lessons.md`
 - current `trend-brief.md`
 
 Write:

@@ -4,14 +4,14 @@ Use this command when the user wants to evaluate or react to a trend.
 
 ## Read
 
-- `.xhsops/config.yaml`
-- `.xhsops/brand/*`
-- `.xhsops/brand/taboo.md`
-- `.xhsops/specs/trend.spec.md`
-- `.xhsops/specs/creation.spec.md`
-- `.xhsops/knowledge/trend-lessons.md`
+- `.xhsspec/config.yaml`
+- `.xhsspec/brand/*`
+- `.xhsspec/brand/taboo.md`
+- `.xhsspec/specs/trend.spec.md`
+- `.xhsspec/specs/creation.spec.md`
+- `.xhsspec/knowledge/trend-lessons.md`
 - target trend run `trend-brief.md`
-- `.xhsops/prompts/trend-fit-check.md`
+- `.xhsspec/prompts/trend-fit-check.md`
 
 ## Write
 

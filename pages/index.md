@@ -2,7 +2,7 @@
 layout: home
 
 hero:
-  name: "XHSOps"
+  name: "XHSSpec"
   text: "小红书内容运营的正确打开方式"
   tagline: "在 Claude Code 里打 /xhs:quick，一篇笔记就写好了。经验还能沉淀下来。"
   actions:
@@ -11,7 +11,7 @@ hero:
       link: /guide/getting-started
     - theme: alt
       text: 先看核心概念
-      link: /concepts/why-xhsops
+      link: /concepts/why-xhs-spec
 ---
 
 # 当程序员开始做内容
@@ -56,7 +56,7 @@ hero:
 
 # 所以这个项目是干什么的
 
-XHSOps 是为所有程序员同行做的。
+XHSSpec 是为所有程序员同行做的。
 
 我是一个写了十多年代码的程序员，最近两年才开始认真做小红书。跟大多数人一样，一开始我觉得内容嘛，不就是「写」吗？
 
@@ -77,11 +77,11 @@ XHSOps 是为所有程序员同行做的。
 
 ---
 
-# XHSOps 怎么解决这个问题
+# XHSSpec 怎么解决这个问题
 
 它不是又一个 AI 写作工具。这个世界上不缺能帮你写东西的 AI。
 
-**XHSOps 是你在 AI 工具里的「内容运营操作系统」。**
+**XHSSpec 是你在 AI 工具里的「内容运营操作系统」。**
 
 它帮你把每一次创作拆成清晰的步骤：
 
@@ -131,9 +131,9 @@ XHSOps 是为所有程序员同行做的。
 
 # 真正重要的是什么
 
-XHSOps 解决的不是「怎么写」的问题。
+XHSSpec 解决的不是「怎么写」的问题。
 
-**XHSOps 解决的是「写了之后留下了什么」的问题。**
+**XHSSpec 解决的是「写了之后留下了什么」的问题。**
 
 当你用这个工具的时候，你不是在进行一次性的对话。
 你是在搭建一个会成长的内容系统。
@@ -146,4 +146,4 @@ XHSOps 解决的不是「怎么写」的问题。
 
 花 2 分钟[初始化你的内容运营工作流](/guide/getting-started)，然后永远告别从零开始。
 
-或者，先看看[核心概念](/concepts/why-xhsops)——看看我是怎么把内容运营变成「工程问题」的。
+或者，先看看[核心概念](/concepts/why-xhs-spec)——看看我是怎么把内容运营变成「工程问题」的。

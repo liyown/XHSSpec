@@ -2,11 +2,11 @@
 
 Read:
 
-- `.xhsops/config.yaml`
-- `.xhsops/brand/*`
-- `.xhsops/strategy/*`
-- `.xhsops/specs/note.spec.md`
-- `.xhsops/specs/creation.spec.md`
+- `.xhsspec/config.yaml`
+- `.xhsspec/brand/*`
+- `.xhsspec/strategy/*`
+- `.xhsspec/specs/note.spec.md`
+- `.xhsspec/specs/creation.spec.md`
 - target `brief.md`
 
 Write:

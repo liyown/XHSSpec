@@ -7,7 +7,7 @@ import { expect, test } from "bun:test";
 import { syncCampaignMetadata } from "../src/services/campaign.ts";
 
 test("syncCampaignMetadata updates tasks and actual note count", async () => {
-  const tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "xhsops-campaign-"));
+  const tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "xhs-spec-campaign-"));
   const campaignPath = path.join(tempRoot, "campaign");
 
   await fs.mkdir(path.join(campaignPath, "drafts"), { recursive: true });

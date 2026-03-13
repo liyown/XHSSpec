@@ -51,5 +51,5 @@ export async function publishCommand(context: CommandContext): Promise<void> {
   console.log(`Read with agent: ${refs.commands.find((ref) => ref.endsWith("xhs-publish.md")) ?? refs.commands[0]}`);
   console.log(`Specs: ${refs.specs.join(", ")}`);
   console.log(`Prompts: ${refs.prompts.join(", ")}`);
-  console.log(`Next: xhsops archive --target ${run.id}${noteId ? ` --note ${noteId}` : ""}`);
+  console.log(`Next: xhs-spec archive --target ${run.id}${noteId ? ` --note ${noteId}` : ""}`);
 }

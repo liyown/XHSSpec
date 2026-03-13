@@ -47,7 +47,7 @@ export async function iterateCommand(context: CommandContext): Promise<void> {
 
     console.log(`Prepared campaign iteration: ${run.id}/${noteId} v${round}`);
     console.log(nextDraftPath);
-    console.log(`Next: /xhs:rewrite or xhsops review --target ${run.id} --note ${noteId}`);
+    console.log(`Next: /xhs:rewrite or xhs-spec review --target ${run.id} --note ${noteId}`);
     return;
   }
 
@@ -60,5 +60,5 @@ export async function iterateCommand(context: CommandContext): Promise<void> {
 
   console.log(`Prepared iteration draft for ${run.id} v${round}`);
   console.log(nextDraftPath);
-  console.log(`Next: /xhs:rewrite or xhsops review --target ${run.id}`);
+  console.log(`Next: /xhs:rewrite or xhs-spec review --target ${run.id}`);
 }

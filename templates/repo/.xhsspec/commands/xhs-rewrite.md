@@ -6,10 +6,10 @@ Use this command after review feedback to produce the next draft version.
 
 - latest draft
 - latest review
-- `.xhsops/brand/*`
-- `.xhsops/specs/note.spec.md`
-- `.xhsops/specs/creation.spec.md`
-- `.xhsops/prompts/rewrite.md`
+- `.xhsspec/brand/*`
+- `.xhsspec/specs/note.spec.md`
+- `.xhsspec/specs/creation.spec.md`
+- `.xhsspec/prompts/rewrite.md`
 
 ## Write
 

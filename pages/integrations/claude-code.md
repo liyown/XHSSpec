@@ -1,20 +1,20 @@
 # Claude Code 集成
 
-在 Claude Code 里使用 XHSOps，你只需要说话，AI 会帮你调用 CLI。
+在 Claude Code 里使用 XHSSpec，你只需要说话，AI 会帮你调用 CLI。
 
 ## 初始化
 
 在终端运行一次初始化命令：
 
 ```bash
-xhsops init --tools claude-code
+xhs-spec init --tools claude-code
 ```
 
-这会在项目中创建 `.xhsops/` 配置文件，Claude Code 会自动读取它们。
+这会在项目中创建 `.xhsspec/` 配置文件，Claude Code 会自动读取它们。
 
 ## 工作原理
 
-XHSOps 通过 slash commands 与 Claude Code 集成。你说出需求，AI 在后台解析命令并调用相应的 CLI。整个过程你只需专注于内容创作，无需手动敲命令。
+XHSSpec 通过 slash commands 与 Claude Code 集成。你说出需求，AI 在后台解析命令并调用相应的 CLI。整个过程你只需专注于内容创作，无需手动敲命令。
 
 ## 使用方式
 

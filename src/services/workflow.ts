@@ -1,7 +1,7 @@
 import path from "node:path";
 
 import type { RunRecord, WorkflowKind } from "../types.ts";
-import { getXhsopsPath, suggestNextStep, workflowReferencePaths } from "../repo.ts";
+import { getXhsSpecPath, suggestNextStep, workflowReferencePaths } from "../repo.ts";
 import { createFrontmatter, pathExists, placeholder, readText, toIsoNow, writeText } from "../utils.ts";
 
 export function baseFrontmatter(id: string, workflow: WorkflowKind, status: string): Record<string, string> {
@@ -52,7 +52,7 @@ export function defaultOutcome(run: RunRecord): string {
 
 export async function appendKnowledgeStub(repoRoot: string, run: RunRecord, outcome: string): Promise<void> {
   const filename = pickKnowledgeFile(run, outcome);
-  const filePath = getXhsopsPath(repoRoot, "knowledge", filename);
+  const filePath = getXhsSpecPath(repoRoot, "knowledge", filename);
   const current = await readText(filePath);
   const next = `${current.trimEnd()}\n\n${buildKnowledgeEntry(run, outcome)}\n`;
   await writeText(filePath, `${next}\n`);

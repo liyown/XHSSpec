@@ -14,17 +14,17 @@ import {
   readText,
 } from "./utils.ts";
 
-export const XHSOPS_DIR = ".xhsops";
+export const XHSSPEC_DIR = ".xhsspec";
 
-const QUICK_DIR = path.join(XHSOPS_DIR, "quick");
-const TREND_DIR = path.join(XHSOPS_DIR, "trends");
-const CAMPAIGN_DIR = path.join(XHSOPS_DIR, "campaigns");
+const QUICK_DIR = path.join(XHSSPEC_DIR, "quick");
+const TREND_DIR = path.join(XHSSPEC_DIR, "trends");
+const CAMPAIGN_DIR = path.join(XHSSPEC_DIR, "campaigns");
 
 export async function findRepoRoot(startDir: string): Promise<string | null> {
   let current = path.resolve(startDir);
 
   while (true) {
-    const configPath = path.join(current, XHSOPS_DIR, "config.yaml");
+    const configPath = path.join(current, XHSSPEC_DIR, "config.yaml");
     if (await pathExists(configPath)) {
       return current;
     }
@@ -38,8 +38,8 @@ export async function findRepoRoot(startDir: string): Promise<string | null> {
   }
 }
 
-export function getXhsopsPath(repoRoot: string, ...segments: string[]): string {
-  return path.join(repoRoot, XHSOPS_DIR, ...segments);
+export function getXhsSpecPath(repoRoot: string, ...segments: string[]): string {
+  return path.join(repoRoot, XHSSPEC_DIR, ...segments);
 }
 
 export function workflowReferencePaths(repoRoot: string, workflow: WorkflowKind): {
@@ -50,67 +50,67 @@ export function workflowReferencePaths(repoRoot: string, workflow: WorkflowKind)
   const specs =
     workflow === "trend"
       ? [
-          getXhsopsPath(repoRoot, "specs", "trend.spec.md"),
-          getXhsopsPath(repoRoot, "specs", "creation.spec.md"),
-          getXhsopsPath(repoRoot, "specs", "review.spec.md"),
-          getXhsopsPath(repoRoot, "specs", "publish.spec.md"),
+          getXhsSpecPath(repoRoot, "specs", "trend.spec.md"),
+          getXhsSpecPath(repoRoot, "specs", "creation.spec.md"),
+          getXhsSpecPath(repoRoot, "specs", "review.spec.md"),
+          getXhsSpecPath(repoRoot, "specs", "publish.spec.md"),
         ]
       : [
-          getXhsopsPath(repoRoot, "specs", "note.spec.md"),
-          getXhsopsPath(repoRoot, "specs", "creation.spec.md"),
-          getXhsopsPath(repoRoot, "specs", "review.spec.md"),
-          getXhsopsPath(repoRoot, "specs", "publish.spec.md"),
+          getXhsSpecPath(repoRoot, "specs", "note.spec.md"),
+          getXhsSpecPath(repoRoot, "specs", "creation.spec.md"),
+          getXhsSpecPath(repoRoot, "specs", "review.spec.md"),
+          getXhsSpecPath(repoRoot, "specs", "publish.spec.md"),
         ];
 
   const prompts =
     workflow === "quick"
       ? [
-          getXhsopsPath(repoRoot, "prompts", "quick-brief.md"),
-          getXhsopsPath(repoRoot, "prompts", "quick-draft.md"),
-          getXhsopsPath(repoRoot, "prompts", "review.md"),
-          getXhsopsPath(repoRoot, "prompts", "rewrite.md"),
-          getXhsopsPath(repoRoot, "prompts", "publish.md"),
-          getXhsopsPath(repoRoot, "prompts", "archive.md"),
+          getXhsSpecPath(repoRoot, "prompts", "quick-brief.md"),
+          getXhsSpecPath(repoRoot, "prompts", "quick-draft.md"),
+          getXhsSpecPath(repoRoot, "prompts", "review.md"),
+          getXhsSpecPath(repoRoot, "prompts", "rewrite.md"),
+          getXhsSpecPath(repoRoot, "prompts", "publish.md"),
+          getXhsSpecPath(repoRoot, "prompts", "archive.md"),
         ]
       : workflow === "trend"
         ? [
-            getXhsopsPath(repoRoot, "prompts", "trend-fit-check.md"),
-            getXhsopsPath(repoRoot, "prompts", "review.md"),
-            getXhsopsPath(repoRoot, "prompts", "rewrite.md"),
-            getXhsopsPath(repoRoot, "prompts", "publish.md"),
-            getXhsopsPath(repoRoot, "prompts", "archive.md"),
+            getXhsSpecPath(repoRoot, "prompts", "trend-fit-check.md"),
+            getXhsSpecPath(repoRoot, "prompts", "review.md"),
+            getXhsSpecPath(repoRoot, "prompts", "rewrite.md"),
+            getXhsSpecPath(repoRoot, "prompts", "publish.md"),
+            getXhsSpecPath(repoRoot, "prompts", "archive.md"),
           ]
         : [
-            getXhsopsPath(repoRoot, "prompts", "campaign-plan.md"),
-            getXhsopsPath(repoRoot, "prompts", "review.md"),
-            getXhsopsPath(repoRoot, "prompts", "rewrite.md"),
-            getXhsopsPath(repoRoot, "prompts", "publish.md"),
-            getXhsopsPath(repoRoot, "prompts", "archive.md"),
+            getXhsSpecPath(repoRoot, "prompts", "campaign-plan.md"),
+            getXhsSpecPath(repoRoot, "prompts", "review.md"),
+            getXhsSpecPath(repoRoot, "prompts", "rewrite.md"),
+            getXhsSpecPath(repoRoot, "prompts", "publish.md"),
+            getXhsSpecPath(repoRoot, "prompts", "archive.md"),
           ];
 
   const commands =
     workflow === "quick"
       ? [
-          getXhsopsPath(repoRoot, "commands", "xhs-quick.md"),
-          getXhsopsPath(repoRoot, "commands", "xhs-review.md"),
-          getXhsopsPath(repoRoot, "commands", "xhs-rewrite.md"),
-          getXhsopsPath(repoRoot, "commands", "xhs-publish.md"),
-          getXhsopsPath(repoRoot, "commands", "xhs-archive.md"),
+          getXhsSpecPath(repoRoot, "commands", "xhs-quick.md"),
+          getXhsSpecPath(repoRoot, "commands", "xhs-review.md"),
+          getXhsSpecPath(repoRoot, "commands", "xhs-rewrite.md"),
+          getXhsSpecPath(repoRoot, "commands", "xhs-publish.md"),
+          getXhsSpecPath(repoRoot, "commands", "xhs-archive.md"),
         ]
       : workflow === "trend"
         ? [
-            getXhsopsPath(repoRoot, "commands", "xhs-hot.md"),
-            getXhsopsPath(repoRoot, "commands", "xhs-review.md"),
-            getXhsopsPath(repoRoot, "commands", "xhs-rewrite.md"),
-            getXhsopsPath(repoRoot, "commands", "xhs-publish.md"),
-            getXhsopsPath(repoRoot, "commands", "xhs-archive.md"),
+            getXhsSpecPath(repoRoot, "commands", "xhs-hot.md"),
+            getXhsSpecPath(repoRoot, "commands", "xhs-review.md"),
+            getXhsSpecPath(repoRoot, "commands", "xhs-rewrite.md"),
+            getXhsSpecPath(repoRoot, "commands", "xhs-publish.md"),
+            getXhsSpecPath(repoRoot, "commands", "xhs-archive.md"),
           ]
         : [
-            getXhsopsPath(repoRoot, "commands", "xhs-plan.md"),
-            getXhsopsPath(repoRoot, "commands", "xhs-review.md"),
-            getXhsopsPath(repoRoot, "commands", "xhs-rewrite.md"),
-            getXhsopsPath(repoRoot, "commands", "xhs-publish.md"),
-            getXhsopsPath(repoRoot, "commands", "xhs-archive.md"),
+            getXhsSpecPath(repoRoot, "commands", "xhs-plan.md"),
+            getXhsSpecPath(repoRoot, "commands", "xhs-review.md"),
+            getXhsSpecPath(repoRoot, "commands", "xhs-rewrite.md"),
+            getXhsSpecPath(repoRoot, "commands", "xhs-publish.md"),
+            getXhsSpecPath(repoRoot, "commands", "xhs-archive.md"),
           ];
 
   return { specs, prompts, commands };
@@ -129,10 +129,10 @@ export async function listRuns(repoRoot: string): Promise<RunRecord[]> {
 async function listWorkflowRuns(repoRoot: string, workflow: WorkflowKind): Promise<RunRecord[]> {
   const baseDir =
     workflow === "quick"
-      ? getXhsopsPath(repoRoot, "quick")
+      ? getXhsSpecPath(repoRoot, "quick")
       : workflow === "trend"
-        ? getXhsopsPath(repoRoot, "trends")
-        : getXhsopsPath(repoRoot, "campaigns");
+        ? getXhsSpecPath(repoRoot, "trends")
+        : getXhsSpecPath(repoRoot, "campaigns");
 
   const names = await listDirectories(baseDir);
   const runs: RunRecord[] = [];
@@ -162,47 +162,47 @@ async function listWorkflowRuns(repoRoot: string, workflow: WorkflowKind): Promi
 export function suggestNextStep(workflow: WorkflowKind, status: string): string {
   if (workflow === "quick") {
     if (status === "drafting" || status === "briefed") {
-      return "/xhs:quick or xhsops review --target <id>";
+      return "/xhs:quick or xhs-spec review --target <id>";
     }
     if (status === "reviewed") {
-      return "/xhs:rewrite or xhsops publish --target <id>";
+      return "/xhs:rewrite or xhs-spec publish --target <id>";
     }
     if (status === "done") {
-      return "xhsops archive --target <id>";
+      return "xhs-spec archive --target <id>";
     }
-    return "xhsops status --target <id>";
+    return "xhs-spec status --target <id>";
   }
 
   if (workflow === "trend") {
     if (status === "fit-checking") {
-      return "/xhs:hot then xhsops fit --target <id> --verdict approved|rejected";
+      return "/xhs:hot then xhs-spec fit --target <id> --verdict approved|rejected";
     }
     if (status === "fit-approved" || status === "drafting") {
-      return "/xhs:draft then xhsops review --target <id>";
+      return "/xhs:draft then xhs-spec review --target <id>";
     }
     if (status === "fit-rejected" || status === "dropped") {
-      return "xhsops archive --target <id> --outcome dropped";
+      return "xhs-spec archive --target <id> --outcome dropped";
     }
     if (status === "reviewed") {
-      return "xhsops publish --target <id> or /xhs:rewrite";
+      return "xhs-spec publish --target <id> or /xhs:rewrite";
     }
     if (status === "done") {
-      return "xhsops archive --target <id>";
+      return "xhs-spec archive --target <id>";
     }
-    return "xhsops status --target <id>";
+    return "xhs-spec status --target <id>";
   }
 
   if (status === "planned" || status === "briefing") {
-    return "/xhs:plan or xhsops draft --target <id> --note note-01";
+    return "/xhs:plan or xhs-spec draft --target <id> --note note-01";
   }
   if (status === "drafting" || status === "reviewing" || status === "iterating") {
-    return "/xhs:draft or xhsops review --target <id>";
+    return "/xhs:draft or xhs-spec review --target <id>";
   }
   if (status === "reviewed") {
-    return "/xhs:rewrite or xhsops publish --target <id> --note note-01";
+    return "/xhs:rewrite or xhs-spec publish --target <id> --note note-01";
   }
   if (status === "ready") {
-    return "xhsops archive --target <id>";
+    return "xhs-spec archive --target <id>";
   }
   return "/xhs:plan";
 }
@@ -215,36 +215,36 @@ export async function resolveRun(repoRoot: string, targetId: string): Promise<Ru
 export async function validateRepo(repoRoot: string): Promise<ValidationIssue[]> {
   const issues: ValidationIssue[] = [];
   const requiredBaseFiles = [
-    getXhsopsPath(repoRoot, "config.yaml"),
-    getXhsopsPath(repoRoot, "brand", "profile.md"),
-    getXhsopsPath(repoRoot, "brand", "audience.md"),
-    getXhsopsPath(repoRoot, "brand", "offer.md"),
-    getXhsopsPath(repoRoot, "brand", "tone.md"),
-    getXhsopsPath(repoRoot, "brand", "taboo.md"),
-    getXhsopsPath(repoRoot, "strategy", "content-pillars.md"),
-    getXhsopsPath(repoRoot, "strategy", "topic-frameworks.md"),
-    getXhsopsPath(repoRoot, "strategy", "keyword-map.md"),
-    getXhsopsPath(repoRoot, "specs", "note.spec.md"),
-    getXhsopsPath(repoRoot, "specs", "creation.spec.md"),
-    getXhsopsPath(repoRoot, "specs", "review.spec.md"),
-    getXhsopsPath(repoRoot, "specs", "trend.spec.md"),
-    getXhsopsPath(repoRoot, "specs", "publish.spec.md"),
-    getXhsopsPath(repoRoot, "specs", "slash-commands.md"),
-    getXhsopsPath(repoRoot, "commands", "xhs-quick.md"),
-    getXhsopsPath(repoRoot, "commands", "xhs-hot.md"),
-    getXhsopsPath(repoRoot, "commands", "xhs-plan.md"),
-    getXhsopsPath(repoRoot, "commands", "xhs-review.md"),
-    getXhsopsPath(repoRoot, "commands", "xhs-rewrite.md"),
-    getXhsopsPath(repoRoot, "commands", "xhs-publish.md"),
-    getXhsopsPath(repoRoot, "commands", "xhs-archive.md"),
-    getXhsopsPath(repoRoot, "prompts", "quick-brief.md"),
-    getXhsopsPath(repoRoot, "prompts", "quick-draft.md"),
-    getXhsopsPath(repoRoot, "prompts", "trend-fit-check.md"),
-    getXhsopsPath(repoRoot, "prompts", "campaign-plan.md"),
-    getXhsopsPath(repoRoot, "prompts", "review.md"),
-    getXhsopsPath(repoRoot, "prompts", "rewrite.md"),
-    getXhsopsPath(repoRoot, "prompts", "publish.md"),
-    getXhsopsPath(repoRoot, "prompts", "archive.md"),
+    getXhsSpecPath(repoRoot, "config.yaml"),
+    getXhsSpecPath(repoRoot, "brand", "profile.md"),
+    getXhsSpecPath(repoRoot, "brand", "audience.md"),
+    getXhsSpecPath(repoRoot, "brand", "offer.md"),
+    getXhsSpecPath(repoRoot, "brand", "tone.md"),
+    getXhsSpecPath(repoRoot, "brand", "taboo.md"),
+    getXhsSpecPath(repoRoot, "strategy", "content-pillars.md"),
+    getXhsSpecPath(repoRoot, "strategy", "topic-frameworks.md"),
+    getXhsSpecPath(repoRoot, "strategy", "keyword-map.md"),
+    getXhsSpecPath(repoRoot, "specs", "note.spec.md"),
+    getXhsSpecPath(repoRoot, "specs", "creation.spec.md"),
+    getXhsSpecPath(repoRoot, "specs", "review.spec.md"),
+    getXhsSpecPath(repoRoot, "specs", "trend.spec.md"),
+    getXhsSpecPath(repoRoot, "specs", "publish.spec.md"),
+    getXhsSpecPath(repoRoot, "specs", "slash-commands.md"),
+    getXhsSpecPath(repoRoot, "commands", "xhs-quick.md"),
+    getXhsSpecPath(repoRoot, "commands", "xhs-hot.md"),
+    getXhsSpecPath(repoRoot, "commands", "xhs-plan.md"),
+    getXhsSpecPath(repoRoot, "commands", "xhs-review.md"),
+    getXhsSpecPath(repoRoot, "commands", "xhs-rewrite.md"),
+    getXhsSpecPath(repoRoot, "commands", "xhs-publish.md"),
+    getXhsSpecPath(repoRoot, "commands", "xhs-archive.md"),
+    getXhsSpecPath(repoRoot, "prompts", "quick-brief.md"),
+    getXhsSpecPath(repoRoot, "prompts", "quick-draft.md"),
+    getXhsSpecPath(repoRoot, "prompts", "trend-fit-check.md"),
+    getXhsSpecPath(repoRoot, "prompts", "campaign-plan.md"),
+    getXhsSpecPath(repoRoot, "prompts", "review.md"),
+    getXhsSpecPath(repoRoot, "prompts", "rewrite.md"),
+    getXhsSpecPath(repoRoot, "prompts", "publish.md"),
+    getXhsSpecPath(repoRoot, "prompts", "archive.md"),
   ];
 
   for (const filePath of requiredBaseFiles) {

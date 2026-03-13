@@ -2,7 +2,7 @@ import path from "node:path";
 
 import type { CommandContext } from "../types.ts";
 import { ensureRepo } from "../lib/context.ts";
-import { getXhsopsPath, workflowReferencePaths } from "../repo.ts";
+import { getXhsSpecPath, workflowReferencePaths } from "../repo.ts";
 import { assertBrandReadyForCreation } from "../services/completeness.ts";
 import { baseFrontmatter } from "../services/workflow.ts";
 import { createFrontmatter, ensureDir, formatDate, getStringArg, placeholder, slugify, toIsoNow, writeText, yamlStringify } from "../utils.ts";
@@ -17,7 +17,7 @@ export async function hotCommand(context: CommandContext): Promise<void> {
 
   const now = toIsoNow();
   const runId = getStringArg(context.args, "id") ?? `trend-${formatDate()}-${slugify(topic) || "run"}`;
-  const runDir = getXhsopsPath(context.repoRoot, "trends", runId);
+  const runDir = getXhsSpecPath(context.repoRoot, "trends", runId);
   await ensureDir(runDir);
 
   const runMeta = {
@@ -88,5 +88,5 @@ export async function hotCommand(context: CommandContext): Promise<void> {
   console.log(`Read with agent: ${refs.commands[0]}`);
   console.log(`Specs: ${refs.specs.join(", ")}`);
   console.log(`Prompts: ${refs.prompts.join(", ")}`);
-  console.log(`Next: /xhs:hot then xhsops fit --target ${runId} --verdict approved|rejected`);
+  console.log(`Next: /xhs:hot then xhs-spec fit --target ${runId} --verdict approved|rejected`);
 }

@@ -41,7 +41,7 @@ export async function assertReadyForDraft(run: RunRecord, noteId?: string): Prom
 
   if (run.workflow === "trend") {
     if (run.status !== "fit-approved" && run.status !== "drafting" && run.status !== "reviewed") {
-      throw new Error(`Cannot proceed to draft because ${run.id} is not fit-approved yet. Run xhsops fit first.`);
+      throw new Error(`Cannot proceed to draft because ${run.id} is not fit-approved yet. Run xhs-spec fit first.`);
     }
     issues.push(...(await inspectMarkdownCompleteness(path.join(run.path, "trend-brief.md"))));
     issues.push(...(await inspectMarkdownCompleteness(path.join(run.path, "fit-check.md"))));
@@ -227,7 +227,7 @@ async function inspectIfExists(filePath: string): Promise<CompletenessIssue[]> {
 async function inspectBrandReadiness(repoRoot: string): Promise<CompletenessIssue[]> {
   const issues: CompletenessIssue[] = [];
   for (const relativePath of BRAND_READY_FILES) {
-    const filePath = path.join(repoRoot, ".xhsops", relativePath);
+    const filePath = path.join(repoRoot, ".xhsspec", relativePath);
     const fileIssues = await inspectMarkdownCompleteness(filePath);
     for (const issue of fileIssues) {
       issues.push({ filePath: issue.filePath, reason: "brand positioning file is incomplete" });

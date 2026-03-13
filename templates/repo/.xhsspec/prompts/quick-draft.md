@@ -2,12 +2,12 @@
 
 Read:
 
-- `.xhsops/brand/*`
-- `.xhsops/strategy/*`
-- `.xhsops/brand/offer.md`
-- `.xhsops/specs/note.spec.md`
-- `.xhsops/specs/creation.spec.md`
-- `.xhsops/knowledge/winning-patterns.md`
+- `.xhsspec/brand/*`
+- `.xhsspec/strategy/*`
+- `.xhsspec/brand/offer.md`
+- `.xhsspec/specs/note.spec.md`
+- `.xhsspec/specs/creation.spec.md`
+- `.xhsspec/knowledge/winning-patterns.md`
 - current `brief.md`
 
 Write:

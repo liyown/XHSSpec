@@ -1,9 +1,9 @@
 #!/usr/bin/env sh
 set -eu
 
-PACKAGE_NAME="${XHSOPS_PACKAGE_NAME:-xhs-spec}"
-PACKAGE_VERSION="${XHSOPS_PACKAGE_VERSION:-latest}"
-INSTALL_MODE="${XHSOPS_INSTALL_MODE:-global}"
+PACKAGE_NAME="${XHS_SPEC_PACKAGE_NAME:-xhs-spec}"
+PACKAGE_VERSION="${XHS_SPEC_PACKAGE_VERSION:-latest}"
+INSTALL_MODE="${XHS_SPEC_INSTALL_MODE:-global}"
 
 if ! command -v node >/dev/null 2>&1; then
   echo "Node.js 20+ is required."
@@ -34,7 +34,7 @@ case "$INSTALL_MODE" in
     npm install --save-dev "$PACKAGE_SPEC"
     ;;
   *)
-    echo "Unsupported XHSOPS_INSTALL_MODE: $INSTALL_MODE"
+    echo "Unsupported XHS_SPEC_INSTALL_MODE: $INSTALL_MODE"
     echo "Use 'global' or 'local'."
     exit 1
     ;;

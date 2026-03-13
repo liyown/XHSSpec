@@ -4,14 +4,14 @@ Use this command when the user wants a structured campaign, series, or experimen
 
 ## Read
 
-- `.xhsops/config.yaml`
-- `.xhsops/brand/*`
-- `.xhsops/strategy/*`
-- `.xhsops/specs/note.spec.md`
-- `.xhsops/specs/creation.spec.md`
-- `.xhsops/knowledge/*`
+- `.xhsspec/config.yaml`
+- `.xhsspec/brand/*`
+- `.xhsspec/strategy/*`
+- `.xhsspec/specs/note.spec.md`
+- `.xhsspec/specs/creation.spec.md`
+- `.xhsspec/knowledge/*`
 - target campaign `proposal.md`, `brief.md`, `tasks.md`
-- `.xhsops/prompts/campaign-plan.md`
+- `.xhsspec/prompts/campaign-plan.md`
 
 ## Write
 

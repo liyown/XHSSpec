@@ -4,10 +4,10 @@ Read:
 
 - latest draft
 - latest review
-- `.xhsops/brand/*`
-- `.xhsops/specs/note.spec.md`
-- `.xhsops/specs/creation.spec.md`
-- `.xhsops/knowledge/winning-patterns.md`
+- `.xhsspec/brand/*`
+- `.xhsspec/specs/note.spec.md`
+- `.xhsspec/specs/creation.spec.md`
+- `.xhsspec/knowledge/winning-patterns.md`
 
 Write:
 

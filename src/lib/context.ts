@@ -1,7 +1,7 @@
 import path from "node:path";
 
 import type { CommandContext } from "../types.ts";
-import { findRepoRoot, getXhsopsPath } from "../repo.ts";
+import { findRepoRoot, getXhsSpecPath } from "../repo.ts";
 import { getStringArg, pathExists } from "../utils.ts";
 
 export async function createContext(args: CommandContext["args"]): Promise<CommandContext> {
@@ -15,8 +15,8 @@ export async function createContext(args: CommandContext["args"]): Promise<Comma
 }
 
 export async function ensureRepo(repoRoot: string): Promise<void> {
-  const configPath = getXhsopsPath(repoRoot, "config.yaml");
+  const configPath = getXhsSpecPath(repoRoot, "config.yaml");
   if (!(await pathExists(configPath))) {
-    throw new Error(`No .xhsops repo found from ${repoRoot}. Run xhsops init first.`);
+    throw new Error(`No .xhsspec repo found from ${repoRoot}. Run xhs-spec init first.`);
   }
 }

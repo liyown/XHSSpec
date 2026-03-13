@@ -2,7 +2,7 @@ import path from "node:path";
 
 import type { CommandContext } from "../types.ts";
 import { ensureRepo } from "../lib/context.ts";
-import { getXhsopsPath, workflowReferencePaths } from "../repo.ts";
+import { getXhsSpecPath, workflowReferencePaths } from "../repo.ts";
 import { assertBrandReadyForCreation } from "../services/completeness.ts";
 import { baseFrontmatter } from "../services/workflow.ts";
 import { createFrontmatter, ensureDir, formatDate, getStringArg, placeholder, toIsoNow, writeText, yamlStringify, slugify } from "../utils.ts";
@@ -17,7 +17,7 @@ export async function quickCommand(context: CommandContext): Promise<void> {
 
   const now = toIsoNow();
   const runId = getStringArg(context.args, "id") ?? `quick-${formatDate()}-${slugify(idea) || "run"}`;
-  const runDir = getXhsopsPath(context.repoRoot, "quick", runId);
+  const runDir = getXhsSpecPath(context.repoRoot, "quick", runId);
   await ensureDir(runDir);
 
   const runMeta = {
@@ -42,12 +42,12 @@ export async function quickCommand(context: CommandContext): Promise<void> {
         "",
         `- Idea: ${idea}`,
         `- Angle: ${runMeta.angle}`,
-        `- Audience segment: ${placeholder("从 .xhsops/brand/audience.md 提取受众段")}`,
+        `- Audience segment: ${placeholder("从 .xhsspec/brand/audience.md 提取受众段")}`,
         `- Core pain point: ${placeholder("补充核心痛点")}`,
         `- Promise or payoff: ${placeholder("补充读者收益")}`,
         `- CTA: ${runMeta.cta}`,
-        "- Audience fit: Fill from .xhsops/brand/audience.md",
-        "- Constraints: Follow .xhsops/specs/note.spec.md and creation.spec.md",
+        "- Audience fit: Fill from .xhsspec/brand/audience.md",
+        "- Constraints: Follow .xhsspec/specs/note.spec.md and creation.spec.md",
         `- Proof or example to mention: ${placeholder("补充案例或证据")}`,
         "- What to avoid: Check brand/taboo.md",
       ].join("\n"),
@@ -92,5 +92,5 @@ export async function quickCommand(context: CommandContext): Promise<void> {
   console.log(`Read with agent: ${refs.commands[0]}`);
   console.log(`Specs: ${refs.specs.join(", ")}`);
   console.log(`Prompts: ${refs.prompts.join(", ")}`);
-  console.log(`Next: /xhs:quick or xhsops review --target ${runId}`);
+  console.log(`Next: /xhs:quick or xhs-spec review --target ${runId}`);
 }

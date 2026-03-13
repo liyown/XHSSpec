@@ -4,7 +4,7 @@ import { fileURLToPath } from "node:url";
 import fs from "node:fs/promises";
 
 import type { CommandContext } from "../types.ts";
-import { getXhsopsPath } from "../repo.ts";
+import { getXhsSpecPath } from "../repo.ts";
 import { copyDir, getStringArg, pathExists, readText, writeText } from "../utils.ts";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -12,31 +12,31 @@ const SUPPORTED_TOOLS = ["codex", "cursor", "claude-code", "vscode"] as const;
 type SupportedTool = (typeof SUPPORTED_TOOLS)[number];
 
 export async function initCommand(context: CommandContext): Promise<void> {
-  const xhsopsDir = getXhsopsPath(context.cwd);
-  const templateRepoDir = await resolveAssetPath("templates", "repo", ".xhsops");
+  const xhsspecDir = getXhsSpecPath(context.cwd);
+  const templateRepoDir = await resolveAssetPath("templates", "repo", ".xhsspec");
   const integrationsDir = await resolveAssetPath("templates", "integrations");
 
-  if ((await pathExists(xhsopsDir)) && context.args.force !== true) {
-    throw new Error(`.xhsops already exists in ${context.cwd}. Use --force to overwrite.`);
+  if ((await pathExists(xhsspecDir)) && context.args.force !== true) {
+    throw new Error(`.xhsspec already exists in ${context.cwd}. Use --force to overwrite.`);
   }
 
-  if (await pathExists(xhsopsDir)) {
-    await fs.rm(xhsopsDir, { recursive: true, force: true });
+  if (await pathExists(xhsspecDir)) {
+    await fs.rm(xhsspecDir, { recursive: true, force: true });
   }
 
-  await copyDir(templateRepoDir, xhsopsDir);
+  await copyDir(templateRepoDir, xhsspecDir);
   const tools = await resolveTools(context);
   await installToolIntegrations(context.cwd, integrationsDir, tools);
-  await recordSelectedTools(xhsopsDir, tools);
+  await recordSelectedTools(xhsspecDir, tools);
 
-  console.log(`Initialized XHSOps repo in ${xhsopsDir}`);
+  console.log(`Initialized XHSSpec repo in ${xhsspecDir}`);
   console.log(`Installed tool integrations: ${tools.length > 0 ? tools.join(", ") : "none"}`);
   console.log("Next steps:");
   console.log("- Fill at least: brand/profile.md, brand/audience.md, brand/offer.md, brand/tone.md, brand/taboo.md");
   console.log("- Then fill: strategy/content-pillars.md and strategy/topic-frameworks.md");
-  console.log("- Use .xhsops/START-HERE.md as the onboarding checklist");
+  console.log("- Use .xhsspec/START-HERE.md as the onboarding checklist");
   console.log("- Start creating: /xhs:quick, /xhs:hot, or /xhs:plan");
-  console.log("- Validate anytime with: xhsops validate --target repo");
+  console.log("- Validate anytime with: xhs-spec validate --target repo");
 }
 
 async function resolveTools(context: CommandContext): Promise<SupportedTool[]> {
@@ -55,7 +55,7 @@ async function resolveTools(context: CommandContext): Promise<SupportedTool[]> {
   });
 
   try {
-    console.log("Select coding tools to install XHSOps integrations for.");
+    console.log("Select coding tools to install XHSSpec integrations for.");
     console.log("Available: codex, cursor, claude-code, vscode");
     console.log("Enter a comma-separated list, 'all', or leave blank for codex.");
     const answer = (await rl.question("> ")).trim();
@@ -101,8 +101,8 @@ async function installToolIntegrations(
   }
 }
 
-async function recordSelectedTools(xhsopsDir: string, tools: SupportedTool[]): Promise<void> {
-  const configPath = path.join(xhsopsDir, "config.yaml");
+async function recordSelectedTools(xhsspecDir: string, tools: SupportedTool[]): Promise<void> {
+  const configPath = path.join(xhsspecDir, "config.yaml");
   const current = await readText(configPath);
   const next = `${current.trimEnd()}\ninstalled_tools:\n${tools.map((tool) => `  - ${tool}`).join("\n")}\n`;
   await writeText(configPath, next);

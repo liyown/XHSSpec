@@ -1,5 +1,5 @@
 version: 0.1.0
-name: xhsops-workspace
+name: xhs-spec-workspace
 default_workflow: quick
 review_default_mode: light
 export_formats:

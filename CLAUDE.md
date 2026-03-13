@@ -4,12 +4,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-XHSOps is a repo-first, spec-driven Xiaohongshu (Little Red Book) content operations CLI designed for coding-agent environments. It manages content creation workflows through versioned Markdown/YAML artifacts instead of one-off prompts.
+XHSSpec is a repo-first, spec-driven Xiaohongshu (Little Red Book) content operations CLI designed for coding-agent environments. It manages content creation workflows through versioned Markdown/YAML artifacts instead of one-off prompts.
 
 ## Commands
 
 ```bash
-bun run src/cli.ts init              # Initialize operating repo with .xhsops/
+bun run src/cli.ts init              # Initialize operating repo with .xhsspec/
 bun run src/cli.ts doctor            # Check setup and configuration
 bun run src/cli.ts plan --theme "AI效率"     # Plan a campaign
 bun run src/cli.ts quick --idea "程序员如何做周报"  # Create quick note
@@ -35,7 +35,7 @@ src/
 ├── utils.ts            # Utilities (arg parsing)
 ├── commands/           # Command implementations
 │   ├── index.ts        # Command registry
-│   ├── init.ts         # Initialize .xhsops/ repo
+│   ├── init.ts         # Initialize .xhsspec/ repo
 │   ├── quick.ts        # Quick note workflow
 │   ├── hot.ts          # Trend reaction workflow
 │   ├── campaign.ts     # Campaign workflow
@@ -66,7 +66,7 @@ src/
 
 ## Key Concepts
 
-- Artifacts stored in `.xhsops/` directory (quick/, trends/, campaigns/)
+- Artifacts stored in `.xhsspec/` directory (quick/, trends/, campaigns/)
 - CLI manages deterministic state transitions
 - Claude handles drafting, reviewing, rewriting, and retrospective synthesis
 - Use `<placeholder>...</placeholder>` for intentionally incomplete fields

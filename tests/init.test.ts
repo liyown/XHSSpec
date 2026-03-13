@@ -22,27 +22,27 @@ function run(tempRoot: string, args: string[]) {
 }
 
 test("init installs selected coding tool integrations", async () => {
-  const tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "xhsops-init-"));
+  const tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "xhs-spec-init-"));
   const output = run(tempRoot, ["init", "--tools", "codex,cursor,claude-code"]);
 
   expect(output).toContain("Installed tool integrations: codex, cursor, claude-code");
   expect(await fs.stat(path.join(tempRoot, "AGENTS.md"))).toBeTruthy();
-  expect(await fs.stat(path.join(tempRoot, ".cursor", "rules", "xhs-ops.mdc"))).toBeTruthy();
+  expect(await fs.stat(path.join(tempRoot, ".cursor", "rules", "xhs-spec.mdc"))).toBeTruthy();
   expect(await fs.stat(path.join(tempRoot, "CLAUDE.md"))).toBeTruthy();
   expect(await fs.stat(path.join(tempRoot, "SKILL.md"))).toBeTruthy();
   expect(await fs.stat(path.join(tempRoot, ".claude", "commands", "xhs-review.md"))).toBeTruthy();
   expect(await fs.stat(path.join(tempRoot, ".claude", "commands", "xhs-rewrite.md"))).toBeTruthy();
   expect(await fs.stat(path.join(tempRoot, ".claude", "commands", "xhs-publish.md"))).toBeTruthy();
   expect(await fs.stat(path.join(tempRoot, ".claude", "commands", "xhs-archive.md"))).toBeTruthy();
-  expect(await fs.stat(path.join(tempRoot, ".xhsops", "prompts", "quick-brief.md"))).toBeTruthy();
-  expect(await fs.stat(path.join(tempRoot, ".xhsops", "prompts", "rewrite.md"))).toBeTruthy();
-  expect(await fs.stat(path.join(tempRoot, ".xhsops", "prompts", "publish.md"))).toBeTruthy();
-  expect(await fs.stat(path.join(tempRoot, ".xhsops", "prompts", "archive.md"))).toBeTruthy();
+  expect(await fs.stat(path.join(tempRoot, ".xhsspec", "prompts", "quick-brief.md"))).toBeTruthy();
+  expect(await fs.stat(path.join(tempRoot, ".xhsspec", "prompts", "rewrite.md"))).toBeTruthy();
+  expect(await fs.stat(path.join(tempRoot, ".xhsspec", "prompts", "publish.md"))).toBeTruthy();
+  expect(await fs.stat(path.join(tempRoot, ".xhsspec", "prompts", "archive.md"))).toBeTruthy();
 
-  const config = await fs.readFile(path.join(tempRoot, ".xhsops", "config.yaml"), "utf8");
-  const quickDraftTemplate = await fs.readFile(path.join(tempRoot, ".xhsops", "templates", "quick-draft.md"), "utf8");
+  const config = await fs.readFile(path.join(tempRoot, ".xhsspec", "config.yaml"), "utf8");
+  const quickDraftTemplate = await fs.readFile(path.join(tempRoot, ".xhsspec", "templates", "quick-draft.md"), "utf8");
   const claudeGuide = await fs.readFile(path.join(tempRoot, "CLAUDE.md"), "utf8");
-  const brandProfile = await fs.readFile(path.join(tempRoot, ".xhsops", "brand", "profile.md"), "utf8");
+  const brandProfile = await fs.readFile(path.join(tempRoot, ".xhsspec", "brand", "profile.md"), "utf8");
   expect(config).toContain("installed_tools:");
   expect(config).toContain("- codex");
   expect(config).toContain("- cursor");
@@ -53,7 +53,7 @@ test("init installs selected coding tool integrations", async () => {
 });
 
 test("quick creation is blocked until brand positioning is filled", async () => {
-  const tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "xhsops-brand-gate-"));
+  const tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "xhs-spec-brand-gate-"));
   run(tempRoot, ["init", "--tools", "claude-code"]);
 
   const result = Bun.spawnSync({

@@ -2,7 +2,7 @@ import path from "node:path";
 
 import type { CommandContext } from "../types.ts";
 import { ensureRepo } from "../lib/context.ts";
-import { getXhsopsPath, workflowReferencePaths } from "../repo.ts";
+import { getXhsSpecPath, workflowReferencePaths } from "../repo.ts";
 import { assertBrandReadyForCreation } from "../services/completeness.ts";
 import { baseFrontmatter } from "../services/workflow.ts";
 import { createFrontmatter, ensureDir, formatDate, getStringArg, placeholder, slugify, toIsoNow, writeText, yamlStringify } from "../utils.ts";
@@ -17,7 +17,7 @@ export async function planCommand(context: CommandContext): Promise<void> {
 
   const now = toIsoNow();
   const campaignId = getStringArg(context.args, "id") ?? `campaign-${formatDate()}-${slugify(theme) || "run"}`;
-  const campaignDir = getXhsopsPath(context.repoRoot, "campaigns", campaignId);
+  const campaignDir = getXhsSpecPath(context.repoRoot, "campaigns", campaignId);
   await ensureDir(path.join(campaignDir, "drafts"));
   await ensureDir(path.join(campaignDir, "reviews"));
 
@@ -90,5 +90,5 @@ export async function planCommand(context: CommandContext): Promise<void> {
   console.log(`Read with agent: ${refs.commands[0]}`);
   console.log(`Specs: ${refs.specs.join(", ")}`);
   console.log(`Prompts: ${refs.prompts.join(", ")}`);
-  console.log(`Next: /xhs:plan or xhsops draft --target ${campaignId} --note note-01`);
+  console.log(`Next: /xhs:plan or xhs-spec draft --target ${campaignId} --note note-01`);
 }

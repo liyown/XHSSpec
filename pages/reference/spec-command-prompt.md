@@ -56,6 +56,6 @@
 
 不是摆设，已经进入系统层：
 
-- `init` 安装这些文件到 `.xhsops/`
+- `init` 安装这些文件到 `.xhsspec/`
 - `validate` / `doctor` 检查它们是否存在
 - AI 执行 slash command 时自动读取

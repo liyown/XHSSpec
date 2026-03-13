@@ -65,7 +65,7 @@ export function printStatusDetail(detail: Record<string, unknown>, asJson: boole
 }
 
 export function printHelp(): void {
-  console.log("XHSOps CLI");
+  console.log("XHSSpec CLI");
   console.log("");
   console.log("Commands:");
   console.log("  init [--force] [--cwd <path>]");

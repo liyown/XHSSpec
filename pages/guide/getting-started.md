@@ -33,10 +33,10 @@ curl -fsSL https://bun.sh/install | bash
 在你的项目目录里（就是你想放内容的地方），跑：
 
 ```bash
-xhsops init
+xhs-spec init
 ```
 
-跑完这行，你的目录里会多出一个 `.xhsops/` 文件夹。恭喜你，你已经有自己的内容运营仓库了。
+跑完这行，你的目录里会多出一个 `.xhsspec/` 文件夹。恭喜你，你已经有自己的内容运营仓库了。
 
 这个文件夹里现在还是空的，别管它。后面 AI 会帮你往里塞东西。
 
@@ -55,7 +55,7 @@ xhsops init
 打开这几个文件，照着模板填：
 
 ```
-.xhsops/brand/
+.xhsspec/brand/
 ├── profile.md    # 你是谁
 ├── audience.md   # 你的读者是谁
 ├── offer.md      # 你提供什么价值
@@ -94,7 +94,7 @@ xhsops init
 AI 会自己：
 
 1. 读取你的品牌配置——它知道你是谁了
-2. 创建一个工作目录——在 `.xhsops/quick/` 下面
+2. 创建一个工作目录——在 `.xhsspec/quick/` 下面
 3. 生成一个 brief——就是"我要怎么写"的计划
 4. 写出第一版初稿——draft.md
 
@@ -184,9 +184,9 @@ AI 会根据一套规则检查：
 帮我归档
 ```
 
-AI 会把这次创作的经验教训写进 `.xhsops/knowledge/winning-patterns.md`。下次它帮你写新内容的时候，会参考这些经验。
+AI 会把这次创作的经验教训写进 `.xhsspec/knowledge/winning-patterns.md`。下次它帮你写新内容的时候，会参考这些经验。
 
-这是 XHSOps 最迷人的地方——不是「聊完就结束」，而是每一次都在积累。
+这是 XHSSpec 最迷人的地方——不是「聊完就结束」，而是每一次都在积累。
 
 ---
 
@@ -194,7 +194,7 @@ AI 会把这次创作的经验教训写进 `.xhsops/knowledge/winning-patterns.m
 
 真的，别想复杂了。
 
-1. `bun install` + `xhsops init` → 一次性
+1. `bun install` + `xhs-spec init` → 一次性
 2. 填 5 个 brand 文件 → 一次性
 3. 之后就在 AI 工具里说话
 

@@ -1,15 +1,15 @@
-# XHSOps Claude Code Integration
+# XHSSpec Claude Code Integration
 
-Use `.xhsops/` as the working memory and source of truth for Xiaohongshu operations in this repo.
+Use `.xhsspec/` as the working memory and source of truth for Xiaohongshu operations in this repo.
 
 ## Read First
 
-- `.xhsops/config.yaml`
-- `.xhsops/brand/*`
-- `.xhsops/strategy/*`
-- `.xhsops/specs/*`
-- `.xhsops/commands/*.md`
-- `.xhsops/prompts/*.md`
+- `.xhsspec/config.yaml`
+- `.xhsspec/brand/*`
+- `.xhsspec/strategy/*`
+- `.xhsspec/specs/*`
+- `.xhsspec/commands/*.md`
+- `.xhsspec/prompts/*.md`
 
 ## Workflow Routing
 
